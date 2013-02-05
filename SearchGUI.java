@@ -19,5 +19,7 @@ public class SearchGUI {
         pane.setLayout(new GridLayout(3,2));
         
         frame.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
-        frame.setVisible(
+        frame.setVisible(true);
+    }
+}
 
