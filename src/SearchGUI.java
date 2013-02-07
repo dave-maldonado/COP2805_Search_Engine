@@ -1,25 +1,42 @@
-import javax.swing.*;
-import java.awt.*;
+import java.awt.EventQueue;
 
-/*
- * GUI for Search Application
- */
+import javax.swing.JFrame;
+
+
 public class SearchGUI {
 
-    public static void main(String[] args) {
-        new SearchGUI();
-    }
-    
-    public SearchGUI() {
-        JFrame frame = new JFrame();
-        frame.setTitle("Search and ye shall find");
-        frame.setSize(500,400);
-        
-        Container pane = frame.getContentPane();
-        pane.setLayout(new GridLayout(3,2));
-        
-        frame.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
-        frame.setVisible(true);
-    }
-}
+	private JFrame frame;
 
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					SearchGUI window = new SearchGUI();
+					window.frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	/**
+	 * Create the application.
+	 */
+	public SearchGUI() {
+		initialize();
+	}
+
+	/**
+	 * Initialize the contents of the frame.
+	 */
+	private void initialize() {
+		frame = new JFrame();
+		frame.setBounds(100, 100, 450, 300);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	}
+
+}
