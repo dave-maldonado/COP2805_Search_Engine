@@ -1,9 +1,10 @@
+package com.SearchEngine;
+
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 
-
-public class SearchGUI {
+public class SearchEngine {
 
 	private JFrame frame;
 
@@ -14,7 +15,7 @@ public class SearchGUI {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					SearchGUI window = new SearchGUI();
+					SearchEngine window = new SearchEngine();
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -26,7 +27,7 @@ public class SearchGUI {
 	/**
 	 * Create the application.
 	 */
-	public SearchGUI() {
+	public SearchEngine() {
 		initialize();
 	}
 
