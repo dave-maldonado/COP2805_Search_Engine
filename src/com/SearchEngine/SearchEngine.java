@@ -2,16 +2,14 @@ package com.SearchEngine;
 
 import java.awt.EventQueue;
 import javax.swing.*;
-import java.awt.GridLayout;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 public class SearchEngine {
 
 	private JFrame frmSearchEngine;
+	private JFrame frmAddRemoveWindow;
 
 	/**
 	 * Launch the application.
@@ -53,13 +51,17 @@ public class SearchEngine {
 		
 		JMenuItem mntmAddremoveFile = new JMenuItem("Add/Remove File");
 		mnFile.add(mntmAddremoveFile);
+		mntmAddremoveFile.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				AddRemoveFilesWindow();
+			}
+		});
 		
 		JMenuItem mntmAbout = new JMenuItem("About");
 		menuBar.add(mntmAbout);
 		mntmAbout.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				aboutDialog();
-				// System.out.println("About Me!");
 			}
 		});
 	}
@@ -80,5 +82,20 @@ public class SearchEngine {
 			    icon);
 	}
 	
-	
+	private static void AddRemoveFilesWindow() {
+		/*frmAddRemoveWindow = new JFrame();
+		frmAddRemoveWindow.setTitle("Add or Remove Files");
+		frmAddRemoveWindow.setBounds(100, 100, 450, 300);*/
+		
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					SearchEngine window = new SearchEngine();
+					window.frmAddRemoveWindow.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
 }
