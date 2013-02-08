@@ -5,11 +5,14 @@ import javax.swing.*;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.FlowLayout;
+import net.miginfocom.swing.MigLayout;
 
 public class SearchEngine {
 
 	private JFrame frmSearchEngine;
 	private JFrame frmAddRemoveWindow;
+	private JTextField textField;
 
 	/**
 	 * Launch the application.
@@ -59,6 +62,20 @@ public class SearchEngine {
 		
 		JMenuItem mntmAbout = new JMenuItem("About");
 		menuBar.add(mntmAbout);
+		frmSearchEngine.getContentPane().setLayout(new MigLayout("", "[grow][][][][][][][][grow]", "[][][][][][]"));
+		
+		JLabel lblEnterSearchTerms = new JLabel("ENTER SEARCH TERMS:");
+		frmSearchEngine.getContentPane().add(lblEnterSearchTerms, "cell 0 1 8 1");
+		
+		textField = new JTextField();
+		frmSearchEngine.getContentPane().add(textField, "cell 0 2 9 2,growx");
+		textField.setColumns(10);
+		
+		JComboBox comboBox = new JComboBox();
+		frmSearchEngine.getContentPane().add(comboBox, "cell 0 4,growx");
+		
+		JButton btnSearch = new JButton("SEARCH");
+		frmSearchEngine.getContentPane().add(btnSearch, "cell 3 5");
 		mntmAbout.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				aboutDialog();
