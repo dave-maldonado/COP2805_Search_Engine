@@ -5,13 +5,11 @@ import javax.swing.*;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.FlowLayout;
-import net.miginfocom.swing.MigLayout;
 
 public class SearchEngine {
 
 	private JFrame frmSearchEngine;
-	private JFrame frmAddRemoveWindow;
+	private static JFrame frmAddRemoveWindow;
 	private JTextField textField;
 
 	/**
@@ -62,25 +60,7 @@ public class SearchEngine {
 		
 		JMenuItem mntmAbout = new JMenuItem("About");
 		menuBar.add(mntmAbout);
-		frmSearchEngine.getContentPane().setLayout(new MigLayout("", "[grow][][][][][][][][grow]", "[][][][][][]"));
 		
-		JLabel lblEnterSearchTerms = new JLabel("ENTER SEARCH TERMS:");
-		frmSearchEngine.getContentPane().add(lblEnterSearchTerms, "cell 0 1 8 1");
-		
-		textField = new JTextField();
-		frmSearchEngine.getContentPane().add(textField, "cell 0 2 9 2,growx");
-		textField.setColumns(10);
-		
-		JComboBox comboBox = new JComboBox();
-		frmSearchEngine.getContentPane().add(comboBox, "cell 0 4,growx");
-		
-		JButton btnSearch = new JButton("SEARCH");
-		frmSearchEngine.getContentPane().add(btnSearch, "cell 3 5");
-		mntmAbout.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				aboutDialog();
-			}
-		});
 	}
 
 	private static void addPopup(Component component, final JPopupMenu popup) {
@@ -100,15 +80,15 @@ public class SearchEngine {
 	}
 	
 	private static void AddRemoveFilesWindow() {
-		/*frmAddRemoveWindow = new JFrame();
+		frmAddRemoveWindow = new JFrame();
 		frmAddRemoveWindow.setTitle("Add or Remove Files");
-		frmAddRemoveWindow.setBounds(100, 100, 450, 300);*/
+		frmAddRemoveWindow.setBounds(100, 100, 450, 300);
 		
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
 					SearchEngine window = new SearchEngine();
-					window.frmAddRemoveWindow.setVisible(true);
+					SearchEngine.frmAddRemoveWindow.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
