@@ -60,7 +60,11 @@ public class SearchEngine {
 		
 		JMenuItem mntmAbout = new JMenuItem("About");
 		menuBar.add(mntmAbout);
-		
+		mntmAbout.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				aboutDialog();
+			}
+		});
 	}
 
 	private static void addPopup(Component component, final JPopupMenu popup) {
