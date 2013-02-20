@@ -2,15 +2,12 @@ package com.SearchEngine;
 
 import java.awt.EventQueue;
 import javax.swing.*;
-import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class SearchEngine {
 
 	private JFrame frmSearchEngine;
-	private static JFrame frmAddRemoveWindow;
-	private JTextField textField;
 
 	/**
 	 * Launch the application.
@@ -54,7 +51,7 @@ public class SearchEngine {
 		mnFile.add(mntmAddremoveFile);
 		mntmAddremoveFile.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				AddRemoveFilesWindow();
+				AddRemoveFileGUI.main(null);
 			}
 		});
 		
@@ -65,9 +62,6 @@ public class SearchEngine {
 				aboutDialog();
 			}
 		});
-	}
-
-	private static void addPopup(Component component, final JPopupMenu popup) {
 	}
 	
 	private static void aboutDialog() {
@@ -81,22 +75,5 @@ public class SearchEngine {
 			    "About Search Engine",
 			    JOptionPane.PLAIN_MESSAGE,
 			    icon);
-	}
-	
-	private static void AddRemoveFilesWindow() {
-		frmAddRemoveWindow = new JFrame();
-		frmAddRemoveWindow.setTitle("Add or Remove Files");
-		frmAddRemoveWindow.setBounds(100, 100, 450, 300);
-		
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					SearchEngine window = new SearchEngine();
-					SearchEngine.frmAddRemoveWindow.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
 	}
 }
