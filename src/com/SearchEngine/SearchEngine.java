@@ -107,7 +107,7 @@ public class SearchEngine {
 		
 		ImageIcon icon = new ImageIcon("images/SearchGuy.jpeg");
 				
-		String message = "Search Engine 1.0\nSolution for COP-280 Project 3-5\nAuthors:\nAndrew Medeiros\nDave Maldonado\nKris Zawalski\nShawn Smith";
+		String message = "Search Engine 1.0\nSolution for COP-2805 Project 3\nAuthors:\nAndrew Medeiros\nDave Maldonado\nKris Zawalski\nShawn Smith";
 		
 		JOptionPane.showMessageDialog(null,
 			    message,
