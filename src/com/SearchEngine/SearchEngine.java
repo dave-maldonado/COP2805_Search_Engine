@@ -2,16 +2,17 @@ package com.SearchEngine;
 
 import java.awt.EventQueue;
 import javax.swing.*;
-import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.BorderLayout;
 import java.awt.FlowLayout;
-import net.miginfocom.swing.MigLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 
 public class SearchEngine {
 
 	private JFrame frmSearchEngine;
-	private JFrame frmAddRemoveWindow;
 	private JTextField textField;
 
 	/**
@@ -42,6 +43,39 @@ public class SearchEngine {
 	 */
 	private void initialize() {
 		frmSearchEngine = new JFrame();
+		GridBagLayout gridBagLayout = new GridBagLayout();
+		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0};
+		gridBagLayout.columnWeights = new double[]{0.0};
+		frmSearchEngine.getContentPane().setLayout(gridBagLayout);
+		JPanel panel = new JPanel();
+		panel.add(new JLabel("ENTER SEARCH TERMS BELOW"));
+		//panel.setBorder(new LineBorder(Color.BLACK));
+		GridBagConstraints gbc_panel = new GridBagConstraints();
+		gbc_panel.insets = new Insets(0, 0, 5, 0);
+		gbc_panel.gridx = 0;
+		gbc_panel.gridy = 0;
+		frmSearchEngine.getContentPane().add(panel, gbc_panel);
+		
+		textField = new JTextField();
+		GridBagConstraints gbc_textField = new GridBagConstraints();
+		gbc_textField.insets = new Insets(0, 0, 5, 0);
+		gbc_textField.fill = GridBagConstraints.HORIZONTAL;
+		gbc_textField.gridx = 0;
+		gbc_textField.gridy = 1;
+		frmSearchEngine.getContentPane().add(textField, gbc_textField);
+		textField.setColumns(10);
+		
+		String[] comboOpts = { "ALL search terms", "ANY search terms", "EXACT phrase" };
+		
+		JComboBox comboBox = new JComboBox(comboOpts);
+		GridBagConstraints gbc_comboBox = new GridBagConstraints();
+		gbc_comboBox.fill = GridBagConstraints.HORIZONTAL;
+		gbc_comboBox.gridx = 0;
+		gbc_comboBox.gridy = 2;
+		frmSearchEngine.getContentPane().add(comboBox, gbc_comboBox);
+		frmSearchEngine.setSize(400, 400);
+		frmSearchEngine.setLocationRelativeTo(null);
+		
 		frmSearchEngine.setTitle("Search Engine");
 		frmSearchEngine.setBounds(100, 100, 450, 300);
 		frmSearchEngine.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -56,63 +90,29 @@ public class SearchEngine {
 		mnFile.add(mntmAddremoveFile);
 		mntmAddremoveFile.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				AddRemoveFilesWindow();
+				AddRemoveFileGUI.main(null);
 			}
 		});
 		
 		JMenuItem mntmAbout = new JMenuItem("About");
 		menuBar.add(mntmAbout);
-		frmSearchEngine.getContentPane().setLayout(new MigLayout("", "[grow][][][][][][][][grow]", "[][][][][][]"));
-		
-		JLabel lblEnterSearchTerms = new JLabel("ENTER SEARCH TERMS:");
-		frmSearchEngine.getContentPane().add(lblEnterSearchTerms, "cell 0 1 8 1");
-		
-		textField = new JTextField();
-		frmSearchEngine.getContentPane().add(textField, "cell 0 2 9 2,growx");
-		textField.setColumns(10);
-		
-		JComboBox comboBox = new JComboBox();
-		frmSearchEngine.getContentPane().add(comboBox, "cell 0 4,growx");
-		
-		JButton btnSearch = new JButton("SEARCH");
-		frmSearchEngine.getContentPane().add(btnSearch, "cell 3 5");
 		mntmAbout.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				aboutDialog();
 			}
 		});
 	}
-
-	private static void addPopup(Component component, final JPopupMenu popup) {
-	}
 	
 	private static void aboutDialog() {
 		
 		ImageIcon icon = new ImageIcon("images/SearchGuy.jpeg");
 				
-		String message = "Search Engine 1.0\nSolution for COP-280 Project 3-5\nAuthors:\nAndrew\nDave\nTwo Other People?";
+		String message = "Search Engine 1.0\nSolution for COP-280 Project 3-5\nAuthors:\nAndrew Medeiros\nDave Maldonado\nKris Zawalski\nShawn Smith";
 		
 		JOptionPane.showMessageDialog(null,
 			    message,
 			    "About Search Engine",
 			    JOptionPane.PLAIN_MESSAGE,
 			    icon);
-	}
-	
-	private static void AddRemoveFilesWindow() {
-		/*frmAddRemoveWindow = new JFrame();
-		frmAddRemoveWindow.setTitle("Add or Remove Files");
-		frmAddRemoveWindow.setBounds(100, 100, 450, 300);*/
-		
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					SearchEngine window = new SearchEngine();
-					window.frmAddRemoveWindow.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
 	}
 }
