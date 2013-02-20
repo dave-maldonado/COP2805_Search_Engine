@@ -11,10 +11,8 @@ import java.io.File;
 
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
-import javax.swing.SwingConstants;
 import javax.swing.JButton;
 import javax.swing.JSplitPane;
-import javax.swing.ListSelectionModel;
 import javax.swing.JScrollPane;
 
 public class AddRemoveFileGUI {
@@ -65,7 +63,7 @@ public class AddRemoveFileGUI {
 		String[][] data = {};
 		
 		table = new JTable(data, columnNames);
-		
+		scrollPane.add(table.getTableHeader());
 		scrollPane.add(table);
 		
 		JLabel lblAddOrRemove = new JLabel("Add Or Remove Files From The Index");
