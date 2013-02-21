@@ -51,17 +51,22 @@ public class AddRemoveFileGUI {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
+		
+		// Create a new JFrame dispose on close
 		frmAddOrRemove = new JFrame();
 		frmAddOrRemove.setTitle("Add or remove files");
 		frmAddOrRemove.setBounds(100, 100, 450, 300);
 		frmAddOrRemove.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		
+		// Add a new scroll pane to our JFrame
 		scrollPane = new JScrollPane();
 		frmAddOrRemove.getContentPane().add(scrollPane, BorderLayout.CENTER);
 		
+		// Column names for our JTable
 		String[] columnNames = { "Filename", "Status" };
 		String[][] data = {};
 		
+		// Add the JTable and the table headers
 		table = new JTable(data, columnNames);
 		scrollPane.add(table.getTableHeader());
 		scrollPane.add(table);
