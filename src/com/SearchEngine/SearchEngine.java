@@ -146,14 +146,8 @@ public class SearchEngine {
 	private static void aboutDialog() {
 		// Icon for the about dialog
 		ImageIcon icon = new ImageIcon("images/SearchGuy.jpeg");
-<<<<<<< HEAD
 		
-		// Message to show in the about dialog
-		String message = "Search Engine 1.0\nSolution for COP-280 Project 3-5\nAuthors:\nAndrew Medeiros\nDave Maldonado\nKris Zawalski\nShawn Smith";
-=======
-				
 		String message = "Search Engine 1.0\nSolution for COP-2805 Project 3\nAuthors:\nAndrew Medeiros\nDave Maldonado\nKris Zawalski\nShawn Smith";
->>>>>>> 698405b889c0a91af06dc009903fc947ebbbc615
 		
 		// Show the dialog with our icon and message
 		JOptionPane.showMessageDialog(null,
