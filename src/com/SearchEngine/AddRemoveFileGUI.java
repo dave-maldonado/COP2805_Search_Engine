@@ -1,5 +1,17 @@
+/*
+ * Add Remove File GUI
+ * 
+ * Authors:
+ * Andrew Medeiros
+ * Dave Maldonado
+ * Kris Zawalski
+ * Shawn Smith
+ * 
+ */
+
 package com.SearchEngine;
 
+import java.awt.Color;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -14,6 +26,8 @@ import javax.swing.JLabel;
 import javax.swing.JButton;
 import javax.swing.JSplitPane;
 import javax.swing.JScrollPane;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 
 public class AddRemoveFileGUI {
 
@@ -58,30 +72,48 @@ public class AddRemoveFileGUI {
 		frmAddOrRemove.setBounds(100, 100, 450, 300);
 		frmAddOrRemove.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		
-		// Add a new scroll pane to our JFrame
-		scrollPane = new JScrollPane();
-		frmAddOrRemove.getContentPane().add(scrollPane, BorderLayout.CENTER);
 		
 		// Column names for our JTable
-		String[] columnNames = { "Filename", "Status" };
-		String[][] data = {};
+		String[] headerNames = { "Filename", "Status" };
+		// Stubbed data for our table
+		String[][] data = {
+							{"test.txt", "indexed"}
+						  };
 		
-		// Add the JTable and the table headers
-		table = new JTable(data, columnNames);
-		scrollPane.add(table.getTableHeader());
-		scrollPane.add(table);
+		// Create our new table and table headers
+		@SuppressWarnings("serial")
+		DefaultTableModel model = new DefaultTableModel(data,headerNames){
+			// Override to make the cells not editable
+			@Override
+		    public boolean isCellEditable(int row, int column) {
+		        return false;
+		    }
+		};
 		
+		table = new JTable(model);
+		JTableHeader header = table.getTableHeader();
+		header.setBackground(Color.yellow);
+
+		// Create a new scroll pane adding the table 
+		scrollPane = new JScrollPane(table);
+		frmAddOrRemove.getContentPane().add(scrollPane, BorderLayout.CENTER);
+		
+		
+		// Create a new label
 		JLabel lblAddOrRemove = new JLabel("Add Or Remove Files From The Index");
 		frmAddOrRemove.getContentPane().add(lblAddOrRemove, BorderLayout.NORTH);
 		
+		// Create a new split pane
 		bottomSplitPane = new JSplitPane();
 		bottomSplitPane.setResizeWeight(0.5);
 		frmAddOrRemove.getContentPane().add(bottomSplitPane, BorderLayout.SOUTH);
 		
+		// New Jbutton for adding files
 		btnAddFile = new JButton("Add File");
 		bottomSplitPane.setLeftComponent(btnAddFile);
 		btnAddFile.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				// New File chooser for selecting files
 				final JFileChooser fc = new JFileChooser();
 				fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
 				fc.showOpenDialog(null);
@@ -89,9 +121,13 @@ public class AddRemoveFileGUI {
 			}
 		});
 		
+		// New button to remove files from the index
 		btnRemoveFile = new JButton("Remove File");
 		bottomSplitPane.setRightComponent(btnRemoveFile);
 		
 	}
 
 }
+
+
+
