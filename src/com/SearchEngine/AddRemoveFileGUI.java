@@ -20,6 +20,7 @@ import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.IOException;
 
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
@@ -36,7 +37,7 @@ public class AddRemoveFileGUI {
 	private JButton btnAddFile;
 	private JButton btnRemoveFile;
 	private JScrollPane scrollPane;
-	private JTable table;
+	public static JTable table;
 
 	/**
 	 * Launch the application.
@@ -45,6 +46,9 @@ public class AddRemoveFileGUI {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
+					// Populate our file table
+					FileIndex.PopulateTable();
+					
 					AddRemoveFileGUI window = new AddRemoveFileGUI();
 					window.frmAddOrRemove.setVisible(true);
 				} catch (Exception e) {
@@ -75,14 +79,10 @@ public class AddRemoveFileGUI {
 		
 		// Column names for our JTable
 		String[] headerNames = { "Filename", "Status" };
-		// Stubbed data for our table
-		String[][] data = {
-							{"test.txt", "indexed"}
-						  };
 		
 		// Create our new table and table headers
 		@SuppressWarnings("serial")
-		DefaultTableModel model = new DefaultTableModel(data,headerNames){
+		DefaultTableModel model = new DefaultTableModel(null, headerNames){
 			// Override to make the cells not editable
 			@Override
 		    public boolean isCellEditable(int row, int column) {
@@ -118,6 +118,14 @@ public class AddRemoveFileGUI {
 				fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
 				fc.showOpenDialog(null);
 				File selectedFile = fc.getSelectedFile();
+				
+				try {
+					FileIndex.AddToIndex(selectedFile);
+				} catch (IOException e1) {
+					// For now print stack trace
+					// Gracefully handle this error later
+					e1.printStackTrace();
+				}
 			}
 		});
 		
