@@ -1,0 +1,2 @@
+/Users/amedeiros/test.go,indexed
+/Users/amedeiros/test.rb,indexed

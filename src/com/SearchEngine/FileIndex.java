@@ -7,6 +7,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+
 import javax.swing.table.DefaultTableModel;
 
 public class FileIndex {
@@ -15,17 +16,24 @@ public class FileIndex {
 	
 	public static void AddToIndex (File newFile) throws IOException {
 		if ( FileIndex.FileExists(INDEX_FILE) ) {
+			String data = newFile.getAbsolutePath() + ",indexed" ;
 			BufferedWriter writer = new BufferedWriter( new FileWriter(INDEX_FILE, true) );
-			writer.append(newFile.getAbsolutePath() + ",indexed");			
+			writer.append(data);			
 			writer.newLine();
 			writer.close();
+			
+			AddToTable( data );
 		} else {
 			FileIndex.CreateIndexFile();
 			// Recursively call this method to add the new file to the index
 			FileIndex.AddToIndex(newFile);
 		}
 		
-		FileIndex.PopulateTable();
+		// FileIndex.PopulateTable();
+	}
+	
+	public static void AddToTable(String data) {
+		( (DefaultTableModel) AddRemoveFileGUI.table.getModel() ).addRow(data.split(","));
 	}
 	
 	public static void PopulateTable() {
