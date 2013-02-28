@@ -17,7 +17,7 @@ public class FileIndex {
 		if ( FileIndex.FileExists(INDEX_FILE) ) {
 			FileWriter fstream = new FileWriter(INDEX_FILE);
 			BufferedWriter out = new BufferedWriter(fstream);		
-			out.append(newFile.getAbsolutePath() + " indexed");			
+			out.append(newFile.getAbsolutePath() + ",indexed");			
 			out.close();
 			fstream.close();
 		} else {
@@ -36,9 +36,11 @@ public class FileIndex {
 			if ( FileExists(INDEX_FILE) ) {
 				BufferedReader reader =  new BufferedReader( new FileReader(INDEX_FILE) );
 				String[] currentLine;
-				while (( currentLine = reader.readLine().split(" ") ) != null) {
+				while (( currentLine = reader.readLine().split(",") ) != null) {
 					( (DefaultTableModel) AddRemoveFileGUI.table.getModel() ).addRow(currentLine);
 				}
+				
+				reader.close();
 			} else {
 				CreateIndexFile();
 			}
