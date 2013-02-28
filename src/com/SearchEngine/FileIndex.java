@@ -14,7 +14,7 @@ public class FileIndex {
 	final static String INDEX_FILE = "tmp/fileindex.txt";
 	
 	public static void AddToIndex (File newFile) throws IOException {
-		if ( FileIndex.IndexFileExists() ) {
+		if ( FileIndex.FileExists(INDEX_FILE) ) {
 			FileWriter fstream = new FileWriter(INDEX_FILE);
 			BufferedWriter out = new BufferedWriter(fstream);		
 			out.append(newFile.getAbsolutePath() + " indexed");			
@@ -33,7 +33,7 @@ public class FileIndex {
 		
 		try {
 			
-			if (IndexFileExists () ) {
+			if ( FileExists(INDEX_FILE) ) {
 				BufferedReader reader =  new BufferedReader( new FileReader(INDEX_FILE) );
 				String[] currentLine;
 				while (( currentLine = reader.readLine().split(" ") ) != null) {
@@ -68,9 +68,9 @@ public class FileIndex {
 		}
 	}
 	
-	private static boolean IndexFileExists() {
-		// Check to see if our index file exists
-		File f = new File(INDEX_FILE);
+	private static boolean FileExists(String file) {
+		// Check to see if the file exists
+		File f = new File(file);
 		
 		if (f.exists()) {
 			return true;
