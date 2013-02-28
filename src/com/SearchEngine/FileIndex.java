@@ -15,11 +15,10 @@ public class FileIndex {
 	
 	public static void AddToIndex (File newFile) throws IOException {
 		if ( FileIndex.FileExists(INDEX_FILE) ) {
-			FileWriter fstream = new FileWriter(INDEX_FILE);
-			BufferedWriter out = new BufferedWriter(fstream);		
-			out.append(newFile.getAbsolutePath() + ",indexed");			
-			out.close();
-			fstream.close();
+			BufferedWriter writer = new BufferedWriter( new FileWriter(INDEX_FILE, true) );
+			writer.append(newFile.getAbsolutePath() + ",indexed");			
+			writer.newLine();
+			writer.close();
 		} else {
 			FileIndex.CreateIndexFile();
 			// Recursively call this method to add the new file to the index
@@ -37,6 +36,9 @@ public class FileIndex {
 				BufferedReader reader =  new BufferedReader( new FileReader(INDEX_FILE) );
 				String[] currentLine;
 				while (( currentLine = reader.readLine().split(",") ) != null) {
+					for (int i = 0; i < currentLine.length; i++) {
+						System.out.println(currentLine[i]);
+					}
 					( (DefaultTableModel) AddRemoveFileGUI.table.getModel() ).addRow(currentLine);
 				}
 				
