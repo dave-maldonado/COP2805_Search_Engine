@@ -44,11 +44,13 @@ public class AddRemoveFileGUI {
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
+		
+		// Populate our file table
+		FileIndex.PopulateTable();
+		
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					// Populate our file table
-					FileIndex.PopulateTable();
 					
 					AddRemoveFileGUI window = new AddRemoveFileGUI();
 					window.frmAddOrRemove.setVisible(true);

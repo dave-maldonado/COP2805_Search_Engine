@@ -9,6 +9,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.table.DefaultTableModel;
@@ -17,7 +18,6 @@ public class FileIndex {
 	
 	final static String INDEX_FILE = "tmp/fileindex.txt";
 	public static List<String> fileIndexed = new ArrayList<String>();
-	
 	
 	public static void AddToIndex (File newFile) throws IOException {
 		if ( FileIndex.FileExists(INDEX_FILE) ) {
@@ -43,7 +43,7 @@ public class FileIndex {
 	
 	public static void AddToTable(String data) {
 		fileIndexed.add(data);
-		System.out.println(fileIndexed.size());
+		System.out.println(fileIndexed.size() + data);
 		( (DefaultTableModel) AddRemoveFileGUI.table.getModel() ).addRow(data.split(","));
 	}
 	
@@ -52,9 +52,9 @@ public class FileIndex {
 			if ( FileExists(INDEX_FILE) ) {
 				BufferedReader reader =  new BufferedReader( new FileReader(INDEX_FILE) );
 				String currentLine;
-				while (( currentLine = reader.readLine() ) != null && reader.ready() ) {
+				while (( currentLine = reader.readLine() ) != null) {
 					AddToTable(currentLine);
-				}			
+				}
 				reader.close();
 			} else {
 				CreateIndexFile();
@@ -62,7 +62,7 @@ public class FileIndex {
 			
 		} catch (FileNotFoundException e) {
 			// Print stack trace for now
-			// Handle gracefully later
+			// Handle gracefully later 
 			// This is for creating the new buffered reader
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -71,6 +71,7 @@ public class FileIndex {
 			// This is for reading a line
 			e.printStackTrace();
 		} catch (NullPointerException e) {
+			e.printStackTrace();
 			System.out.println(e.getMessage());
 		}
 	}
@@ -98,11 +99,18 @@ public class FileIndex {
 	}
 	
 	private static boolean FileIndexed(String file) {
-		if ( fileIndexed.contains(file) || fileIndexed.size() == 0 ) {
-			return false;
+		
+		if ( fileIndexed.isEmpty() == false ) {
+			Iterator<String> iterate = fileIndexed.iterator();
+			while ( iterate.hasNext() ) {
+				String next = iterate.next();
+				if (next.contains(file)) {
+					return true;
+				}
+			}
 		}
 		
-		// Assume file in our index file for default
-		return true;
+		// Assume file not in the index default
+		return false;
 	}
 }
