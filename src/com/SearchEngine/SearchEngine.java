@@ -109,7 +109,9 @@ public class SearchEngine {
 		btnSearch.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// Stubbed out a message for now
-				textField.setText("Search Button Pressed!!");
+				textField.setText("Inverted Index Called!!");
+				// calls constructor for InvertedIndex as test
+				new InvertedIndex(FileIndex.fileIndexed);
 			}
 		});
 		
