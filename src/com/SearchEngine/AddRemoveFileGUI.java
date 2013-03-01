@@ -78,7 +78,7 @@ public class AddRemoveFileGUI {
 		
 		
 		// Column names for our JTable
-		String[] headerNames = { "Filename", "Status" };
+		String[] headerNames = { "Filename", "Status", "Last Modified" };
 		
 		// Create our new table and table headers
 		@SuppressWarnings("serial")

@@ -1,3 +1,1 @@
-/Users/amedeiros/test.go,indexed
-/Users/amedeiros/test.rb,indexed/Users/amedeiros/test.go,indexed
-/Users/amedeiros/test.go,indexed
+/Users/amedeiros/test.go,indexed,2013-02-08

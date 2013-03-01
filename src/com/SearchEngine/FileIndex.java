@@ -7,6 +7,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.sql.Date;
 
 import javax.swing.table.DefaultTableModel;
 
@@ -16,7 +17,7 @@ public class FileIndex {
 	
 	public static void AddToIndex (File newFile) throws IOException {
 		if ( FileIndex.FileExists(INDEX_FILE) ) {
-			String data = newFile.getAbsolutePath() + ",indexed" ;
+			String data = newFile.getAbsolutePath() + ",indexed," + new Date(newFile.lastModified());
 			BufferedWriter writer = new BufferedWriter( new FileWriter(INDEX_FILE, true) );
 			writer.append(data);			
 			writer.newLine();
