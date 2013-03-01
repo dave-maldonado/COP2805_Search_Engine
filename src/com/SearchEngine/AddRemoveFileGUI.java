@@ -25,6 +25,7 @@ import java.io.IOException;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import javax.swing.JSplitPane;
 import javax.swing.JScrollPane;
 import javax.swing.table.DefaultTableModel;
@@ -32,7 +33,7 @@ import javax.swing.table.JTableHeader;
 
 public class AddRemoveFileGUI {
 
-	private JFrame frmAddOrRemove;
+	private static JFrame frmAddOrRemove;
 	private JSplitPane bottomSplitPane;
 	private JButton btnAddFile;
 	private JButton btnRemoveFile;
@@ -133,6 +134,11 @@ public class AddRemoveFileGUI {
 		btnRemoveFile = new JButton("Remove File");
 		bottomSplitPane.setRightComponent(btnRemoveFile);
 		
+	}
+	
+	// Alert window method to display custom alert window
+	public static void AlertWindow(String message) {
+		JOptionPane.showMessageDialog(null, message, null, JOptionPane.ERROR_MESSAGE);
 	}
 
 }

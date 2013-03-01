@@ -8,22 +8,32 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.table.DefaultTableModel;
 
 public class FileIndex {
 	
 	final static String INDEX_FILE = "tmp/fileindex.txt";
+	public static List<String> fileIndexed = new ArrayList<String>();
+	
 	
 	public static void AddToIndex (File newFile) throws IOException {
 		if ( FileIndex.FileExists(INDEX_FILE) ) {
-			String data = newFile.getAbsolutePath() + ",indexed," + new Date(newFile.lastModified());
-			BufferedWriter writer = new BufferedWriter( new FileWriter(INDEX_FILE, true) );
-			writer.append(data);			
-			writer.newLine();
-			writer.close();
 			
-			AddToTable( data );
+			if (FileIndexed(newFile.getAbsolutePath()) == false) {
+				String data = newFile.getAbsolutePath() + ",indexed," + new Date(newFile.lastModified());
+				BufferedWriter writer = new BufferedWriter( new FileWriter(INDEX_FILE, true) );
+				writer.append(data);			
+				writer.newLine();
+				writer.close();
+				
+				AddToTable( data );
+			} else {
+				AddRemoveFileGUI.AlertWindow("File " + newFile.getName() + " already added.");
+			}
+			
 		} else {
 			FileIndex.CreateIndexFile();
 			// Recursively call this method to add the new file to the index
@@ -32,20 +42,19 @@ public class FileIndex {
 	}
 	
 	public static void AddToTable(String data) {
+		fileIndexed.add(data);
+		System.out.println(fileIndexed.size());
 		( (DefaultTableModel) AddRemoveFileGUI.table.getModel() ).addRow(data.split(","));
 	}
 	
 	public static void PopulateTable() {
-		
 		try {
-			
 			if ( FileExists(INDEX_FILE) ) {
 				BufferedReader reader =  new BufferedReader( new FileReader(INDEX_FILE) );
 				String currentLine;
 				while (( currentLine = reader.readLine() ) != null && reader.ready() ) {
 					AddToTable(currentLine);
-				}
-				
+				}			
 				reader.close();
 			} else {
 				CreateIndexFile();
@@ -86,5 +95,14 @@ public class FileIndex {
 		
 		// Assume failure for default
 		return false;
+	}
+	
+	private static boolean FileIndexed(String file) {
+		if ( fileIndexed.contains(file) || fileIndexed.size() == 0 ) {
+			return false;
+		}
+		
+		// Assume file in our index file for default
+		return true;
 	}
 }
