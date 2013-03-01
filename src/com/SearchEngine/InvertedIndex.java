@@ -2,19 +2,28 @@ package com.SearchEngine;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import com.sun.xml.internal.bind.v2.runtime.reflect.ListIterator;
 
 /**
- * Builds an Inverted Index with supplied String list of files in following format:
- * <filepath , status, last accessed>, see FileIndex class
+ * Builds an Inverted Index with supplied String list of files with entries
+ * in following format: { filepath , status, last accessed }, see FileIndex class
  * @author dave maldonado 2013
  */
 public class InvertedIndex {
 	
+	
 	private int size;
 	final static String DELIMITER = ",";
+	
+	// list of files to be parsed
 	private List<String> filePaths = new ArrayList<String>();
+	
+	// data structure for inverted index 
+	// outer HashMap - keys are parsed words from docs, values are inner HashMap
+	// inner HashMap - keys are document names, values are position in document
+	private HashMap<String,HashMap<String,Integer>> foo = new HashMap<String,HashMap<String,Integer>>();
+	
 	
 	/**
 	 * Constructor that calls telescoped constructor with additional size argument
@@ -29,10 +38,9 @@ public class InvertedIndex {
 	 * and builds inverted index
 	 * @param file, size
 	 */
-	public InvertedIndex(List<String> files, int size) {
+	private InvertedIndex(List<String> files, int size) {
 		
 		// copies file path info from input list to filePaths,
-		// see FileIndex class for format of input
 		// NOTE TO SELF: make sure this isn't a memory hog (looks kinda bad with all the created arrays)
 		for (String s : files) {
 			String[] tokens = s.split(DELIMITER);
