@@ -141,6 +141,9 @@ public class SearchEngine {
 				aboutDialog();
 			}
 		});
+		
+		// Set the file index list
+		FileIndex.SetFileIndexed();
 	}
 	
 	private static void aboutDialog() {

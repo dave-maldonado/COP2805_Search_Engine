@@ -45,13 +45,9 @@ public class AddRemoveFileGUI {
 	 */
 	public static void main(String[] args) {
 		
-		// Populate our file table
-		FileIndex.PopulateTable();
-		
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					
 					AddRemoveFileGUI window = new AddRemoveFileGUI();
 					window.frmAddOrRemove.setVisible(true);
 				} catch (Exception e) {
@@ -86,7 +82,7 @@ public class AddRemoveFileGUI {
 		// Create our new table and table headers
 		@SuppressWarnings("serial")
 		DefaultTableModel model = new DefaultTableModel(null, headerNames){
-			// Override to make the cells not editable
+		// Override to make the cells not editable
 			@Override
 		    public boolean isCellEditable(int row, int column) {
 		        return false;
@@ -135,6 +131,9 @@ public class AddRemoveFileGUI {
 		// New button to remove files from the index
 		btnRemoveFile = new JButton("Remove File");
 		bottomSplitPane.setRightComponent(btnRemoveFile);
+		
+		// Populate our file table
+		FileIndex.PopulateTable();
 		
 	}
 	

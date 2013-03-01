@@ -53,13 +53,16 @@ public class FileIndex {
 		( (DefaultTableModel) AddRemoveFileGUI.table.getModel() ).addRow(data.split(DELIMITER));
 	}
 	
-	public static void PopulateTable() {
+	public static void SetFileIndexed() {
 		try {
 			if ( FileExists(INDEX_FILE) ) {
 				BufferedReader reader =  new BufferedReader( new FileReader(INDEX_FILE) );
 				String currentLine;
 				while (( currentLine = reader.readLine() ) != null) {
-					AddToTable(currentLine);
+					// Only add the file info to our list if it has not been added
+					if ( FileIndexed(currentLine) == false) {
+						fileIndexed.add(currentLine);
+					}
 				}
 				reader.close();
 			} else {
@@ -67,19 +70,23 @@ public class FileIndex {
 			}
 			
 		} catch (FileNotFoundException e) {
-			// Print stack trace for now
-			// Handle gracefully later 
 			// This is for creating the new buffered reader
-			e.printStackTrace();
+			// This should never get called as we check for the file to exist first
+			AddRemoveFileGUI.AlertWindow("File Not Found\n" + e.getMessage());
 		} catch (IOException e) {
 			// Print stack trace for now
-			// Handle gracefully later
 			// This is for reading a line
-			e.printStackTrace();
-		} catch (NullPointerException e) {
-			e.printStackTrace();
-			System.out.println(e.getMessage());
+			AddRemoveFileGUI.AlertWindow("Cannot read from file\n" + e.getMessage());
 		}
+	}
+	
+	public static void PopulateTable() {
+		if ( fileIndexed.isEmpty() == false ) {
+			Iterator<String> iterate = fileIndexed.iterator();
+			while ( iterate.hasNext() ) {
+				AddToTable(iterate.next());
+			}
+		}	
 	}
 	
 	private static void CreateIndexFile() {
@@ -92,6 +99,7 @@ public class FileIndex {
 		}
 	}
 	
+	// Method to check if a file exists or not
 	private static boolean FileExists(String file) {
 		// Check to see if the file exists
 		File f = new File(file);
@@ -104,6 +112,8 @@ public class FileIndex {
 		return false;
 	}
 	
+	// Method to check for file being added to
+	// the fileIndexed list
 	private static boolean FileIndexed(String file) {
 		
 		if ( fileIndexed.isEmpty() == false ) {
