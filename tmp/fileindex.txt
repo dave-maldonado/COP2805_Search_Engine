@@ -1,0 +1,2 @@
+/Users/amedeiros/test.go,indexed,2013-02-08
+/Users/amedeiros/test.rb,indexed,2013-02-08

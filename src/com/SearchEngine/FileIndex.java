@@ -17,13 +17,14 @@ import javax.swing.table.DefaultTableModel;
 public class FileIndex {
 	
 	final static String INDEX_FILE = "tmp/fileindex.txt";
+	final static String DELIMITER = ",";
 	public static List<String> fileIndexed = new ArrayList<String>();
 	
 	public static void AddToIndex (File newFile) throws IOException {
 		if ( FileIndex.FileExists(INDEX_FILE) ) {
 			
 			if (FileIndexed(newFile.getAbsolutePath()) == false) {
-				String data = newFile.getAbsolutePath() + ",indexed," + new Date(newFile.lastModified());
+				String data = newFile.getAbsolutePath() + DELIMITER + "indexed" + DELIMITER + new Date(newFile.lastModified());
 				BufferedWriter writer = new BufferedWriter( new FileWriter(INDEX_FILE, true) );
 				writer.append(data);			
 				writer.newLine();
@@ -42,9 +43,14 @@ public class FileIndex {
 	}
 	
 	public static void AddToTable(String data) {
-		fileIndexed.add(data);
-		System.out.println(fileIndexed.size() + data);
-		( (DefaultTableModel) AddRemoveFileGUI.table.getModel() ).addRow(data.split(","));
+		
+		// Only add the file info to our list if it has not been added
+		if ( FileIndexed(data) == false) {
+			fileIndexed.add(data);
+		}
+		
+		// Add the file info to the jtable
+		( (DefaultTableModel) AddRemoveFileGUI.table.getModel() ).addRow(data.split(DELIMITER));
 	}
 	
 	public static void PopulateTable() {
@@ -104,7 +110,7 @@ public class FileIndex {
 			Iterator<String> iterate = fileIndexed.iterator();
 			while ( iterate.hasNext() ) {
 				String next = iterate.next();
-				if (next.contains(file)) {
+				if ( next.contains(file) ) {
 					return true;
 				}
 			}
