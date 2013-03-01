@@ -28,8 +28,6 @@ public class FileIndex {
 			// Recursively call this method to add the new file to the index
 			FileIndex.AddToIndex(newFile);
 		}
-		
-		// FileIndex.PopulateTable();
 	}
 	
 	public static void AddToTable(String data) {
@@ -42,12 +40,9 @@ public class FileIndex {
 			
 			if ( FileExists(INDEX_FILE) ) {
 				BufferedReader reader =  new BufferedReader( new FileReader(INDEX_FILE) );
-				String[] currentLine;
-				while (( currentLine = reader.readLine().split(",") ) != null) {
-					for (int i = 0; i < currentLine.length; i++) {
-						System.out.println(currentLine[i]);
-					}
-					( (DefaultTableModel) AddRemoveFileGUI.table.getModel() ).addRow(currentLine);
+				String currentLine;
+				while (( currentLine = reader.readLine() ) != null && reader.ready() ) {
+					AddToTable(currentLine);
 				}
 				
 				reader.close();
