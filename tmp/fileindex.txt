@@ -1,0 +1,3 @@
+/Users/amedeiros/test.go,indexed,2013-02-08
+/Users/amedeiros/test.rb,indexed,2013-02-08
+/Users/amedeiros/k2s2ty3vaw_trial_analysis_642_multiple_locations_2012-10-01_to_2013-01-31.csv,indexed,2013-02-11

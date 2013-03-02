@@ -14,7 +14,9 @@ import java.util.List;
 
 /**
  * 
- * Creates a file Index with the status of the file and last modified
+ * Creates a file Index with the status of the file and last modified.
+ * This is stored in a persitant file and loaded into a list on start up in the following format
+ * { file path, status, last modified }
  * 
  * @author Andrew Medeiros 2013
  * 
@@ -28,25 +30,41 @@ public class FileIndex {
 	final static String DELIMITER = ",";
 	public static List<String> fileIndexed = new ArrayList<String>();
 	
-	public static void AddToIndex (File newFile) throws IOException {
+	public static void AddToIndex (File newFile) {
+		if (FileIndexed(newFile.getAbsolutePath()) == false) {
+			String data = newFile.getAbsolutePath() + DELIMITER + "indexed" + DELIMITER + new Date(newFile.lastModified());
+			fileIndexed.add(data);
+			FileIndex.AddToTable(data);
+		} else {
+			AddRemoveFileGUI.AlertWindow("File " + newFile.getName() + " already added.");
+		}
+	}
+	
+	// Method to rewrite the persistant storage file on close
+	// This is how we keep status control over the file
+	public static void WriteFileIndex() {
+		
 		if ( FileIndex.FileExists(INDEX_FILE) ) {
 			
-			if (FileIndexed(newFile.getAbsolutePath()) == false) {
-				String data = newFile.getAbsolutePath() + DELIMITER + "indexed" + DELIMITER + new Date(newFile.lastModified());
-				BufferedWriter writer = new BufferedWriter( new FileWriter(INDEX_FILE, true) );
-				writer.append(data);			
-				writer.newLine();
-				writer.close();
-				
-				AddToTable( data );
-			} else {
-				AddRemoveFileGUI.AlertWindow("File " + newFile.getName() + " already added.");
+			if ( fileIndexed.isEmpty() == false ) {
+				try {
+					BufferedWriter writer = new BufferedWriter( new FileWriter(INDEX_FILE) );
+					for (String currentLine: fileIndexed) {
+						writer.write(currentLine);
+						writer.newLine();
+					}
+					
+					writer.flush();
+					writer.close();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}			
 			}
-			
 		} else {
+			// Create the index file and call this method again to write to persistant storage
 			FileIndex.CreateIndexFile();
-			// Recursively call this method to add the new file to the index
-			FileIndex.AddToIndex(newFile);
+			FileIndex.WriteFileIndex();
 		}
 	}
 	
@@ -67,6 +85,13 @@ public class FileIndex {
 				BufferedReader reader =  new BufferedReader( new FileReader(INDEX_FILE) );
 				String currentLine;
 				while (( currentLine = reader.readLine() ) != null) {
+					
+					// Check to see if the files in our index still exist
+					// IF not change its status
+					if ( FileExists(currentLine.split(DELIMITER)[0] ) == false ) {
+						currentLine = UpdateFileStatus(currentLine, "Not Found");
+					}
+					
 					// Only add the file info to our list if it has not been added
 					if ( FileIndexed(currentLine) == false) {
 						fileIndexed.add(currentLine);
@@ -119,10 +144,10 @@ public class FileIndex {
 		return false;
 	}
 	
-	// Method to check for file being added to
-	// the fileIndexed list
+	// Method to check for file being added to the fileIndexed list
 	private static boolean FileIndexed(String file) {
 		
+		// If the file index is empty skip the check and return false
 		if ( fileIndexed.isEmpty() == false ) {
 			Iterator<String> iterate = fileIndexed.iterator();
 			while ( iterate.hasNext() ) {
@@ -135,5 +160,13 @@ public class FileIndex {
 		
 		// Assume file not in the index default
 		return false;
+	}
+	
+	// The status of the file is the second part of the string on each line
+	// Example: Filename,Status,Last Modified
+	private static String UpdateFileStatus(String fileData, String status) {
+		String[] temp = fileData.split(DELIMITER);
+		temp[1] = status;		
+		return temp[0] + DELIMITER + temp[1] + DELIMITER + temp[2];
 	}
 }

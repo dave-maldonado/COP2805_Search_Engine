@@ -23,6 +23,7 @@ public class SearchEngine {
 
 	private JFrame frmSearchEngine;
 	private JTextField textField;
+	final Thread mainThread = Thread.currentThread();
 
 	/**
 	 * Launch the application.
@@ -37,6 +38,17 @@ public class SearchEngine {
 					e.printStackTrace();
 				}
 			}
+		});
+		
+		/**
+		 * @author Andrew Medeiros
+		 * Shut down hook run any methods calls here before shutdown
+		 */
+		
+		Runtime.getRuntime().addShutdownHook(new Thread() {
+		    public void run() {
+		        FileIndex.WriteFileIndex();
+		    }
 		});
 	}
 

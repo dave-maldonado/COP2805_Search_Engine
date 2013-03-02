@@ -20,7 +20,6 @@ import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.io.IOException;
 
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
@@ -117,14 +116,8 @@ public class AddRemoveFileGUI {
 				fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
 				fc.showOpenDialog(null);
 				File selectedFile = fc.getSelectedFile();
-				
-				try {
-					FileIndex.AddToIndex(selectedFile);
-				} catch (IOException e1) {
-					// For now print stack trace
-					// Gracefully handle this error later
-					e1.printStackTrace();
-				}
+
+				FileIndex.AddToIndex(selectedFile);
 			}
 		});
 		
