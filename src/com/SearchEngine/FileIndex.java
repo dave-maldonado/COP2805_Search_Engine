@@ -28,11 +28,12 @@ public class FileIndex {
 	
 	final static String INDEX_FILE = "tmp/fileindex.txt";
 	final static String DELIMITER = ",";
+	private static String[] statuses = { "Indexed", "Not Found" }; 
 	public static List<String> fileIndexed = new ArrayList<String>();
 	
 	public static void AddToIndex (File newFile) {
 		if (FileIndexed(newFile.getAbsolutePath()) == false) {
-			String data = newFile.getAbsolutePath() + DELIMITER + "indexed" + DELIMITER + new Date(newFile.lastModified());
+			String data = newFile.getAbsolutePath() + DELIMITER + statuses[0] + DELIMITER + new Date(newFile.lastModified());
 			fileIndexed.add(data);
 			FileIndex.AddToTable(data);
 		} else {
@@ -40,7 +41,7 @@ public class FileIndex {
 		}
 	}
 	
-	// Method to rewrite the persistant storage file on close
+	// Method to rewrite the persistent storage file on close
 	// This is how we keep status control over the file
 	public static void WriteFileIndex() {
 		
@@ -69,12 +70,6 @@ public class FileIndex {
 	}
 	
 	public static void AddToTable(String data) {
-		
-		// Only add the file info to our list if it has not been added
-		if ( FileIndexed(data) == false) {
-			fileIndexed.add(data);
-		}
-		
 		// Add the file info to the jtable
 		( (DefaultTableModel) AddRemoveFileGUI.table.getModel() ).addRow(data.split(DELIMITER));
 	}
@@ -86,11 +81,8 @@ public class FileIndex {
 				String currentLine;
 				while (( currentLine = reader.readLine() ) != null) {
 					
-					// Check to see if the files in our index still exist
-					// IF not change its status
-					if ( FileExists(currentLine.split(DELIMITER)[0] ) == false ) {
-						currentLine = UpdateFileStatus(currentLine, "Not Found");
-					}
+					// Update the files status if it has changed
+					currentLine = FileIndex.UpdateFileStatus(currentLine);
 					
 					// Only add the file info to our list if it has not been added
 					if ( FileIndexed(currentLine) == false) {
@@ -116,7 +108,10 @@ public class FileIndex {
 		if ( fileIndexed.isEmpty() == false ) {
 			Iterator<String> iterate = fileIndexed.iterator();
 			while ( iterate.hasNext() ) {
-				AddToTable(iterate.next());
+				String next = iterate.next();
+				// Update the files status if it has changed
+				next = FileIndex.UpdateFileStatus(next);
+				AddToTable(next);
 			}
 		}	
 	}
@@ -164,9 +159,18 @@ public class FileIndex {
 	
 	// The status of the file is the second part of the string on each line
 	// Example: Filename,Status,Last Modified
-	private static String UpdateFileStatus(String fileData, String status) {
-		String[] temp = fileData.split(DELIMITER);
-		temp[1] = status;		
-		return temp[0] + DELIMITER + temp[1] + DELIMITER + temp[2];
+	// Update the file status and return the string
+	private static String UpdateFileStatus(String fileData) {
+		String[] data = fileData.split(DELIMITER);
+		
+		if ( FileExists(data[0]) == false ) {
+			data[1] = statuses[1]; 
+			fileData = data[0] + DELIMITER + data[1] + DELIMITER + data[2];
+		} else if ( FileExists(data[0]) && data[1].equals(statuses[1]) ) {
+			data[1] = statuses[0]; 
+			fileData = data[0] + DELIMITER + data[1] + DELIMITER + data[2];
+		}
+		
+		return fileData;
 	}
 }
