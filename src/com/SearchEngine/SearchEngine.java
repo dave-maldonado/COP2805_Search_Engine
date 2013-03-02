@@ -40,11 +40,7 @@ public class SearchEngine {
 			}
 		});
 		
-		/**
-		 * @author Andrew Medeiros
-		 * Shut down hook run any methods calls here before shutdown
-		 */
-		
+		// Shut down hook run any methods calls here before shutdown
 		Runtime.getRuntime().addShutdownHook(new Thread() {
 		    public void run() {
 		        FileIndex.WriteFileIndex();
