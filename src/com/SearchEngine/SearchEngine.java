@@ -23,7 +23,6 @@ public class SearchEngine {
 
 	private JFrame frmSearchEngine;
 	private JTextField textField;
-	final Thread mainThread = Thread.currentThread();
 
 	/**
 	 * Launch the application.
