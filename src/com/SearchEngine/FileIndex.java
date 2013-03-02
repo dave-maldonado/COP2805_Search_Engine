@@ -12,6 +12,14 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+/**
+ * 
+ * Creates a file Index with the status of the file and last modified
+ * 
+ * @author Andrew Medeiros 2013
+ * 
+ */
+
 import javax.swing.table.DefaultTableModel;
 
 public class FileIndex {
@@ -74,7 +82,6 @@ public class FileIndex {
 			// This should never get called as we check for the file to exist first
 			AddRemoveFileGUI.AlertWindow("File Not Found\n" + e.getMessage());
 		} catch (IOException e) {
-			// Print stack trace for now
 			// This is for reading a line
 			AddRemoveFileGUI.AlertWindow("Cannot read from file\n" + e.getMessage());
 		}
