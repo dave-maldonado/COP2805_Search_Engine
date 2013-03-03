@@ -41,37 +41,68 @@ public class FileIndex {
 		}
 	}
 	
+	public static void RemoveFromIndex (String removeFile) {
+		// If the file index is empty skip
+		if ( fileIndexed.isEmpty() == false ) {
+			Iterator<String> iterate = fileIndexed.iterator();
+			int index = 0;
+			while ( iterate.hasNext() ) {
+				String next = iterate.next();
+				if ( next.contains(removeFile) ) {
+					fileIndexed.remove(index);
+					break;
+				}
+				index++;
+			}
+		}
+	}
+	
 	// Method to rewrite the persistent storage file on close
 	// This is how we keep status control over the file
 	public static void WriteFileIndex() {
 		
 		if ( FileIndex.FileExists(INDEX_FILE) ) {
-			
-			if ( fileIndexed.isEmpty() == false ) {
-				try {
-					BufferedWriter writer = new BufferedWriter( new FileWriter(INDEX_FILE) );
-					for (String currentLine: fileIndexed) {
-						writer.write(currentLine);
-						writer.newLine();
-					}
-					
-					writer.flush();
-					writer.close();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}			
-			}
+			try {
+				BufferedWriter writer = new BufferedWriter( new FileWriter(INDEX_FILE) );
+				for (String currentLine: fileIndexed) {
+					writer.write(currentLine);
+					writer.newLine();
+				}
+				
+				writer.flush();
+				writer.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}			
 		} else {
-			// Create the index file and call this method again to write to persistant storage
+			// Create the index file and call this method again to write to persistent storage
 			FileIndex.CreateIndexFile();
 			FileIndex.WriteFileIndex();
 		}
 	}
 	
 	public static void AddToTable(String data) {
-		// Add the file info to the jtable
+		// Add the file info to the JTable
 		( (DefaultTableModel) AddRemoveFileGUI.table.getModel() ).addRow(data.split(DELIMITER));
+	}
+	
+	// Method to remove rows from the JTable
+	public static void RemoveFromTable() {
+		
+		int selectedRow = AddRemoveFileGUI.table.getSelectedRow();
+		
+		if (selectedRow >= 0 && selectedRow <= AddRemoveFileGUI.table.getRowCount()) {
+			
+			// Remove the row from the indexedFile list
+			String fileName = (String) AddRemoveFileGUI.table.getModel().getValueAt(selectedRow, 0);
+			FileIndex.RemoveFromIndex(fileName);
+			
+			// Remove from the table
+			( (DefaultTableModel) AddRemoveFileGUI.table.getModel() ).removeRow(selectedRow);
+			( (DefaultTableModel) AddRemoveFileGUI.table.getModel() ).fireTableDataChanged();
+		}
+		
 	}
 	
 	public static void SetFileIndexed() {

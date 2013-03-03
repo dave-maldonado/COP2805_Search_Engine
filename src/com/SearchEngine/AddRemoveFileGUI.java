@@ -32,7 +32,7 @@ import javax.swing.table.JTableHeader;
 
 public class AddRemoveFileGUI {
 
-	private static JFrame frmAddOrRemove;
+	private JFrame frmAddOrRemove;
 	private JSplitPane bottomSplitPane;
 	private JButton btnAddFile;
 	private JButton btnRemoveFile;
@@ -106,7 +106,7 @@ public class AddRemoveFileGUI {
 		bottomSplitPane.setResizeWeight(0.5);
 		frmAddOrRemove.getContentPane().add(bottomSplitPane, BorderLayout.SOUTH);
 		
-		// New Jbutton for adding files
+		// New JButton for adding files
 		btnAddFile = new JButton("Add File");
 		bottomSplitPane.setLeftComponent(btnAddFile);
 		btnAddFile.addActionListener(new ActionListener() {
@@ -124,6 +124,12 @@ public class AddRemoveFileGUI {
 		// New button to remove files from the index
 		btnRemoveFile = new JButton("Remove File");
 		bottomSplitPane.setRightComponent(btnRemoveFile);
+		btnRemoveFile.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				// Remove the selected row
+				FileIndex.RemoveFromTable();
+			}
+		});
 		
 		// Populate our file table
 		FileIndex.PopulateTable();
