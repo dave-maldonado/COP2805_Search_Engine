@@ -11,15 +11,14 @@ import java.util.List;
  */
 public class InvertedIndex {
 		
-	private int size;
-	private int docID = 1;
+	private int docID;
 	final static String DELIMITER = ",";
 	
 	// list of files to be parsed
 	private List<String> files = new ArrayList<String>();
 	
 	// data structure for inverted index:
-	// keys are parsed words from docs, values are an ArrayList of Pair Objects 
+	// keys are parsed words from documents, values are an ArrayList of Pair Objects 
 	private HashMap<String,ArrayList> invertInd = new HashMap<String,ArrayList>();
 
 	// private inner class for Pair Objects, pairs will consist of {docID, position of word in doc}
@@ -57,36 +56,29 @@ public class InvertedIndex {
 	}
 	
 	/**
-	 * Constructor that calls telescoped constructor with additional size argument
-	 * @param file
-	 * @throws FileNotFoundException 
-	 */
-	public InvertedIndex(List<String> input) {
-		new InvertedIndex (input, input.size());
-	}
-	
-	/**
 	 * Constructor that reads in String list of files and size of list then parses files
 	 * and builds inverted index
-	 * @param file, size
-	 * @throws FileNotFoundException 
+	 * @param file 
 	 */
-	private InvertedIndex(List<String> input, int size) {
+	public InvertedIndex(List<String> input) {
 		
-		// creates String ArrayList w/ format {docID (number), file path}
-		for (String s : input) {
-			String[] tokens = s.split(DELIMITER);
-			files.add(docID + DELIMITER + tokens[0]);
-			docID++;
-		}
-		
-		// populates HashMaps
-		
+		reloadIndex(input);
 		
 		//for testing
-		System.out.println("size of passed array:" + size);
 		System.out.println("contents of passed list:   " + input);
 		System.out.println("contents of processed list:" + files);
 	}
 	
+	// creates String ArrayList w/ format {docID (number), file path}
+	public void reloadIndex(List<String> input) {
+		
+		files.clear();
+		invertInd.clear();
+		docID = 1;
+		for (String s : input) {
+			String[] tokens = s.split(DELIMITER);
+			files.add(docID + DELIMITER + tokens[0]);
+			docID++;
+		}	
+	}
 }
