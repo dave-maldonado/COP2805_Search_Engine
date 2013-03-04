@@ -1,1 +1,5 @@
 /Users/amedeiros/test.go,Indexed,2013-02-08
+<<<<<<< HEAD
+=======
+
+>>>>>>> changed data structure and added Pair inner class
