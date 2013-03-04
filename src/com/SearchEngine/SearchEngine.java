@@ -18,6 +18,7 @@ import java.awt.event.ActionListener;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.io.FileNotFoundException;
 
 public class SearchEngine {
 
@@ -118,7 +119,12 @@ public class SearchEngine {
 				// Stubbed out a message for now
 				textField.setText("Inverted Index Called!!");
 				// calls constructor for InvertedIndex as test
-				new InvertedIndex(FileIndex.fileIndexed);
+				try {
+					new InvertedIndex(FileIndex.fileIndexed);
+				} catch (FileNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 		});
 		

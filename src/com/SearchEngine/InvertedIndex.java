@@ -1,84 +1,80 @@
 package com.SearchEngine;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Scanner;
 
 /**
- * Builds an Inverted Index with supplied String list of files with entries
- * in following format: { file path , status, last accessed }, see FileIndex class
+ * Builds an Inverted Index in memory with supplied Strings in following format:
+ * { file path, status, last accessed }, see FileIndex class
  * @author dave maldonado 2013
  */
 public class InvertedIndex {
 		
-	private int docID;
 	final static String DELIMITER = ",";
 	
-	// list of files to be parsed
-	private List<String> files = new ArrayList<String>();
 	
 	// data structure for inverted index:
-	// keys are parsed words from documents, values are an ArrayList of Pair Objects 
+	// key is parsed word from document, value is an ArrayList of Pair Objects 
 	private HashMap<String,ArrayList> invertInd = new HashMap<String,ArrayList>();
 
-	// private inner class for Pair Objects, pairs will consist of {docID, position of word in doc}
-	private class Pair<L,R> {
+	
+	/**
+	 * Constructor that reads in String list of files, parses files
+	 * and builds inverted index
+	 * @param input
+	 * @throws FileNotFoundException 
+	 */
+	public InvertedIndex(List<String> input) throws FileNotFoundException {
 		
-		private final L left;
-		private final R right;
-		
-		public Pair(L left, R right) {
-			this.left = left;
-			this.right = right;
+		if (!input.isEmpty()) {
+			for (String s : input) {
+				processFile(s);
+			}
 		}
 		
-		public L getLeft() { 
-			return left; 
-		}
+		//for testing
+		Iterator iter = invertInd.keySet().iterator();
 		
-		public R getRight() { 
-			return right; 
-		}
-		
-		@Override
-		public int hashCode() {
-			return left.hashCode() ^ right.hashCode(); 
-		}
-		
-		@Override
-		public boolean equals(Object o) {
-			if (o == null) return false;
-			if (!(o instanceof Pair)) return false;
-			Pair pairo = (Pair) o;
-			return this.left.equals(pairo.getLeft()) &&
-				   this.right.equals(pairo.getRight());
+		while (iter.hasNext()) {
+			String key = iter.next().toString();
+			String value = invertInd.get(key).toString();
+			
+			System.out.println(key + " " + value);
+			
 		}
 	}
 	
 	/**
-	 * Constructor that reads in String list of files and size of list then parses files
-	 * and builds inverted index
-	 * @param file 
+	 * Method for processing single file
+	 * @param file
+	 * @throws FileNotFoundException
 	 */
-	public InvertedIndex(List<String> input) {
+	public void processFile(String file) throws FileNotFoundException {
 		
-		reloadIndex(input);
+		int wordPos = 1;
 		
-		//for testing
-		System.out.println("contents of passed list:   " + input);
-		System.out.println("contents of processed list:" + files);
-	}
-	
-	// creates String ArrayList w/ format {docID (number), file path}
-	public void reloadIndex(List<String> input) {
-		
-		files.clear();
-		invertInd.clear();
-		docID = 1;
-		for (String s : input) {
-			String[] tokens = s.split(DELIMITER);
-			files.add(docID + DELIMITER + tokens[0]);
-			docID++;
-		}	
+		String[] tokens = file.split(DELIMITER);
+		String filename = tokens[0];
+		Scanner in = new Scanner(new File(filename));
+		while (in.hasNext()) {
+			String word = in.next();
+			if (!invertInd.containsKey(word)) {
+				ArrayList values = new ArrayList<Pair>();
+				Pair<String,Integer> pair = new Pair<String,Integer>(filename, wordPos);
+				values.add(pair);
+				invertInd.put(word, values);
+			} else {
+				ArrayList values = invertInd.get(word);
+				Pair<String,Integer> pair = new Pair<String,Integer>(filename, wordPos);
+				values.add(pair);
+				invertInd.put(word, values);
+			}
+			wordPos++;
+		}
 	}
 }
