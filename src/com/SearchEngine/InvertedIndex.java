@@ -23,7 +23,7 @@ public class InvertedIndex {
 	/**
 	 * Constructor that builds Inverted Index from supplied list of file paths
 	 * supplied list must have file path BEFORE first DELIMITER
-	 * @param input
+	 * @param files
 	 * @throws FileNotFoundException 
 	 */
 	public InvertedIndex(List<String> files) throws FileNotFoundException {
@@ -77,7 +77,7 @@ public class InvertedIndex {
 	/**
 	 * Method to clear then reload Inverted Index from supplied list of file paths
 	 * supplied list must have file path BEFORE first DELIMITER
-	 * @param input
+	 * @param files
 	 */
 	public void reloadIndex(List<String> files) {
 		
