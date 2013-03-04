@@ -9,48 +9,44 @@ import java.util.List;
 import java.util.Scanner;
 
 /**
- * Builds an Inverted Index in memory with supplied Strings in following format:
- * { file path, status, last accessed }, see FileIndex class
+ * Builds an Inverted Index in memory using supplied list of file paths
  * @author dave maldonado 2013
  */
 public class InvertedIndex {
 		
 	final static String DELIMITER = ",";
-	
-	
+		
 	// data structure for inverted index:
 	// key is parsed word from document, value is an ArrayList of Pair Objects 
 	private HashMap<String,ArrayList> invertInd = new HashMap<String,ArrayList>();
 
-	
 	/**
-	 * Constructor that reads in String list of files, parses files
-	 * and builds inverted index
+	 * Constructor that builds Inverted Index from supplied list of file paths
+	 * supplied list must have file path BEFORE first DELIMITER
 	 * @param input
 	 * @throws FileNotFoundException 
 	 */
-	public InvertedIndex(List<String> input) throws FileNotFoundException {
+	public InvertedIndex(List<String> files) throws FileNotFoundException {
 		
-		if (!input.isEmpty()) {
-			for (String s : input) {
+		// processes all files in list
+		if (!files.isEmpty()) {
+			for (String s : files) {
 				processFile(s);
 			}
 		}
 		
-		//for testing
+		//for testing, prints Inverted Index to the console
 		Iterator iter = invertInd.keySet().iterator();
-		
 		while (iter.hasNext()) {
 			String key = iter.next().toString();
 			String value = invertInd.get(key).toString();
-			
 			System.out.println(key + " " + value);
-			
 		}
 	}
 	
 	/**
-	 * Method for processing single file
+	 * Method for processing single text file into Inverted Index
+	 * String must have file path BEFORE first DELIMITER
 	 * @param file
 	 * @throws FileNotFoundException
 	 */
@@ -75,6 +71,26 @@ public class InvertedIndex {
 				invertInd.put(word, values);
 			}
 			wordPos++;
+		}
+	}
+	
+	/**
+	 * Method to clear then reload Inverted Index from supplied list of file paths
+	 * supplied list must have file path BEFORE first DELIMITER
+	 * @param input
+	 */
+	public void reloadIndex(List<String> files) {
+		
+		invertInd.clear();
+		
+		if (!files.isEmpty()) {
+			for (String s : files) {
+				try {
+					processFile(s);
+				} catch (FileNotFoundException e) {
+					e.printStackTrace();
+				}
+			}
 		}
 	}
 }
