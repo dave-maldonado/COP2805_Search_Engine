@@ -9,20 +9,26 @@ import java.util.List;
 import java.util.Scanner;
 
 /**
- * Builds an Inverted Index in memory using supplied list of file paths
+ * Builds an Inverted Index in memory using supplied file paths
  * @author dave maldonado 2013
  */
 public class InvertedIndex {
-		
+				
+	/*
+	 * Each file path supplied to this class must be a String with
+	 * the file path at the beginning and marked at the end with 
+	 * the DELIMITER. Any information after the DELIMITER will not be 
+	 * used.
+	 */
+	
 	final static String DELIMITER = ",";
-		
+	
 	// data structure for inverted index:
 	// key is parsed word from document, value is an ArrayList of Pair Objects 
 	private HashMap<String,ArrayList> invertInd = new HashMap<String,ArrayList>();
 
 	/**
 	 * Constructor that builds Inverted Index from supplied list of file paths
-	 * supplied list must have file path BEFORE first DELIMITER
 	 * @param files
 	 * @throws FileNotFoundException 
 	 */
@@ -45,8 +51,7 @@ public class InvertedIndex {
 	}
 	
 	/**
-	 * Method for processing single text file into Inverted Index
-	 * String must have file path BEFORE first DELIMITER
+	 * Method for indexing single text file from supplied file path
 	 * @param file
 	 * @throws FileNotFoundException
 	 */
@@ -55,18 +60,18 @@ public class InvertedIndex {
 		int wordPos = 1;
 		
 		String[] tokens = file.split(DELIMITER);
-		String filename = tokens[0];
-		Scanner in = new Scanner(new File(filename));
+		String filePath = tokens[0];
+		Scanner in = new Scanner(new File(filePath));
 		while (in.hasNext()) {
 			String word = in.next();
 			if (!invertInd.containsKey(word)) {
 				ArrayList values = new ArrayList<Pair>();
-				Pair<String,Integer> pair = new Pair<String,Integer>(filename, wordPos);
+				Pair<String,Integer> pair = new Pair<String,Integer>(filePath, wordPos);
 				values.add(pair);
 				invertInd.put(word, values);
 			} else {
 				ArrayList values = invertInd.get(word);
-				Pair<String,Integer> pair = new Pair<String,Integer>(filename, wordPos);
+				Pair<String,Integer> pair = new Pair<String,Integer>(filePath, wordPos);
 				values.add(pair);
 				invertInd.put(word, values);
 			}
@@ -75,8 +80,7 @@ public class InvertedIndex {
 	}
 	
 	/**
-	 * Method to clear then reload Inverted Index from supplied list of file paths
-	 * supplied list must have file path BEFORE first DELIMITER
+	 * Method to clear then re-load Inverted Index from supplied list of file paths
 	 * @param files
 	 */
 	public void reloadIndex(List<String> files) {
