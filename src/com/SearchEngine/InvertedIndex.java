@@ -83,17 +83,14 @@ public class InvertedIndex {
 	 * Method to clear then re-load Inverted Index from supplied list of file paths
 	 * @param files
 	 */
-	public void reloadIndex(List<String> files) {
+	public void reloadIndex(List<String> files) throws FileNotFoundException {
 		
 		invertInd.clear();
 		
 		if (!files.isEmpty()) {
-			for (String s : files) {
-				try {
-					processFile(s);
-				} catch (FileNotFoundException e) {
-					e.printStackTrace();
-				}
+			for (String s : files) {					
+				processFile(s);
+
 			}
 		}
 	}
