@@ -40,14 +40,6 @@ public class InvertedIndex {
 				processFile(s);
 			}
 		}
-		
-		//for testing, prints Inverted Index to the console
-		Iterator iter = invertInd.keySet().iterator();
-		while (iter.hasNext()) {
-			String key = iter.next().toString();
-			String value = invertInd.get(key).toString();
-			System.out.println(key + " " + value);
-		}
 	}
 	
 	/**
@@ -92,6 +84,18 @@ public class InvertedIndex {
 				processFile(s);
 
 			}
+		}
+	}
+	
+	/**
+	 *  Method to print Inverted Index
+	 */
+	public void printIndex() {
+		Iterator iter = invertInd.keySet().iterator();
+		while (iter.hasNext()) {
+			String key = iter.next().toString();
+			String value = invertInd.get(key).toString();
+			System.out.println(key + " " + value);
 		}
 	}
 }

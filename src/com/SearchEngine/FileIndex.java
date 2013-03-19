@@ -15,7 +15,7 @@ import java.util.List;
 /**
  * 
  * Creates a file Index with the status of the file and last modified.
- * This is stored in a persitant file and loaded into a list on start up in the following format
+ * This is stored in a persistent file and loaded into a list on start up in the following format
  * { file path, status, last modified }
  * 
  * @author Andrew Medeiros 2013
@@ -36,6 +36,13 @@ public class FileIndex {
 			String data = newFile.getAbsolutePath() + DELIMITER + statuses[0] + DELIMITER + new Date(newFile.lastModified());
 			fileIndexed.add(data);
 			FileIndex.AddToTable(data);
+			// Add File to Inverted Index
+			try {
+				SearchEngine.invertInd.processFile(newFile.getAbsolutePath());
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		} else {
 			AddRemoveFileGUI.AlertWindow("File " + newFile.getName() + " already added.");
 		}
@@ -53,6 +60,13 @@ public class FileIndex {
 					break;
 				}
 				index++;
+			}
+			// Remove File from Inverted Index
+			try {
+				SearchEngine.invertInd.reloadIndex(fileIndexed);
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 		}
 	}
