@@ -24,7 +24,6 @@ public class SearchEngine {
 
 	private JFrame frmSearchEngine;
 	private JTextField textField;
-	public static InvertedIndex invertInd;
 	
 	/**
 	 * Launch the application.
@@ -119,7 +118,7 @@ public class SearchEngine {
 			public void actionPerformed(ActionEvent e) {
 				// Stubbed out a message for now
 				textField.setText("Show Inverted Index!");
-				invertInd.printIndex();
+				InvertedIndex.getInstance().printIndex();
 			}
 		});
 		
@@ -154,9 +153,9 @@ public class SearchEngine {
 		
 		// Set the file index list
 		FileIndex.SetFileIndexed();
-		// Create Inverted Index
+		// Load initial Inverted Index
 		try {
-			invertInd = new InvertedIndex(FileIndex.fileIndexed);
+			InvertedIndex.getInstance().loadIndex(FileIndex.fileIndexed);
 		} catch (FileNotFoundException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();

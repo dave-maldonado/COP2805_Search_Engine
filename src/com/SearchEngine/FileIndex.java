@@ -38,7 +38,7 @@ public class FileIndex {
 			FileIndex.AddToTable(data);
 			// Add File to Inverted Index
 			try {
-				SearchEngine.invertInd.processFile(newFile.getAbsolutePath());
+				InvertedIndex.getInstance().processFile(newFile.getAbsolutePath());
 			} catch (FileNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -63,7 +63,7 @@ public class FileIndex {
 			}
 			// Remove File from Inverted Index
 			try {
-				SearchEngine.invertInd.reloadIndex(fileIndexed);
+				InvertedIndex.getInstance().loadIndex(fileIndexed);
 			} catch (FileNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
