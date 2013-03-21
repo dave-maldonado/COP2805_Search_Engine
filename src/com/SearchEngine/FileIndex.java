@@ -31,6 +31,10 @@ public class FileIndex {
 	private static String[] statuses = { "Indexed", "Not Found" }; 
 	public static List<String> fileIndexed = new ArrayList<String>();
 	
+	/**
+	 * Takes a new file object and adds it to our fileIndexed
+	 * @param newFile
+	 */
 	public static void AddToIndex (File newFile) {
 		if (FileIndexed(newFile.getAbsolutePath()) == false) {
 			String data = newFile.getAbsolutePath() + DELIMITER + statuses[0] + DELIMITER + new Date(newFile.lastModified());
@@ -48,6 +52,11 @@ public class FileIndex {
 		}
 	}
 	
+	
+	/**
+	 * Removes a file from the index
+	 * @param removeFile
+	 */
 	public static void RemoveFromIndex (String removeFile) {
 		// If the file index is empty skip
 		if ( fileIndexed.isEmpty() == false ) {
@@ -71,8 +80,10 @@ public class FileIndex {
 		}
 	}
 	
-	// Method to rewrite the persistent storage file on close
-	// This is how we keep status control over the file
+	/**
+	 * Method to rewrite the persistent storage file on close
+	 * This is how we keep status control over the file
+	 */
 	public static void WriteFileIndex() {
 		
 		if ( FileIndex.FileExists(INDEX_FILE) ) {
@@ -96,12 +107,18 @@ public class FileIndex {
 		}
 	}
 	
+	/**
+	 * Add the file information to our GUI JTable
+	 * @param data
+	 */
 	public static void AddToTable(String data) {
 		// Add the file info to the JTable
 		( (DefaultTableModel) AddRemoveFileGUI.table.getModel() ).addRow(data.split(DELIMITER));
 	}
 	
-	// Method to remove rows from the JTable
+	/**
+	 * Method to remove rows from the JTable
+	 */
 	public static void RemoveFromTable() {
 		
 		int selectedRow = AddRemoveFileGUI.table.getSelectedRow();
@@ -119,6 +136,9 @@ public class FileIndex {
 		
 	}
 	
+	/**
+	 * Set the fileIndexed from our index file 
+	 */
 	public static void SetFileIndexed() {
 		try {
 			if ( FileExists(INDEX_FILE) ) {
@@ -149,6 +169,9 @@ public class FileIndex {
 		}
 	}
 	
+	/**
+	 * Populate our JTable on GUI start
+	 */
 	public static void PopulateTable() {
 		if ( fileIndexed.isEmpty() == false ) {
 			Iterator<String> iterate = fileIndexed.iterator();
@@ -161,6 +184,9 @@ public class FileIndex {
 		}	
 	}
 	
+	/**
+	 * Create the index file if it has not been created
+	 */
 	private static void CreateIndexFile() {
 		final File CREATE_INDEX = new File(INDEX_FILE);
 		try {
@@ -171,7 +197,13 @@ public class FileIndex {
 		}
 	}
 	
-	// Method to check if a file exists or not
+	
+	/**
+	 * Helper method to check if a file exists or not
+	 * Takes a string as a parameter and returns a boolean
+	 * @param file
+	 * @return
+	 */
 	private static boolean FileExists(String file) {
 		// Check to see if the file exists
 		File f = new File(file);
@@ -184,6 +216,13 @@ public class FileIndex {
 		return false;
 	}
 	
+	
+	/**
+	 * Helper method to check if the file is already added to the fileIndexed list
+	 * Takes a string as a parameter and returns a boolean
+	 * @param file
+	 * @return
+	 */
 	// Method to check for file being added to the fileIndexed list
 	private static boolean FileIndexed(String file) {
 		
@@ -202,9 +241,14 @@ public class FileIndex {
 		return false;
 	}
 	
-	// The status of the file is the second part of the string on each line
-	// Example: Filename,Status,Last Modified
-	// Update the file status and return the string
+	
+	/**
+	 * Update the status of the file if it has changed
+	 * The status of the file is the second part of the string on each line
+	 * Example: Filename,Status,Last Modified
+	 * Update the file status and return the string
+	 * @return
+	 */
 	private static String UpdateFileStatus(String fileData) {
 		String[] data = fileData.split(DELIMITER);
 		
