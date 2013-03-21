@@ -9,10 +9,10 @@ import java.util.List;
 import java.util.Scanner;
 
 /**
- * Builds an Inverted Index in memory using supplied file paths
+ * Builds an Inverted Index in memory 
  * @author dave maldonado 2013
  */
-public class InvertedIndex {
+public final class InvertedIndex {
 				
 	/*
 	 * Each file path supplied to this class must be a String with
@@ -21,33 +21,21 @@ public class InvertedIndex {
 	 * used.
 	 */
 	
-	final static String DELIMITER = ",";
-	
+	final static String DELIMITER = ","; 
+	private static final InvertedIndex uniqueInstance = new InvertedIndex();
+	private InvertedIndex() {}
+
 	// data structure for inverted index:
 	// key is parsed word from document, value is an ArrayList of Pair Objects 
 	private HashMap<String,ArrayList> invertInd = new HashMap<String,ArrayList>();
 
+	
 	/**
-	 * Constructor that builds Inverted Index from supplied list of file paths
-	 * @param files
-	 * @throws FileNotFoundException 
+	 * Method to return a reference to Singleton Inverted Index
+	 * @return uniqueInstance
 	 */
-	public InvertedIndex(List<String> files) throws FileNotFoundException {
-		
-		// processes all files in list
-		if (!files.isEmpty()) {
-			for (String s : files) {
-				processFile(s);
-			}
-		}
-		
-		//for testing, prints Inverted Index to the console
-		Iterator iter = invertInd.keySet().iterator();
-		while (iter.hasNext()) {
-			String key = iter.next().toString();
-			String value = invertInd.get(key).toString();
-			System.out.println(key + " " + value);
-		}
+	public static InvertedIndex getInstance() {
+		return uniqueInstance;
 	}
 	
 	/**
@@ -80,18 +68,31 @@ public class InvertedIndex {
 	}
 	
 	/**
-	 * Method to clear then re-load Inverted Index from supplied list of file paths
+	 * Method to load Inverted Index from supplied list of file paths
 	 * @param files
 	 */
-	public void reloadIndex(List<String> files) throws FileNotFoundException {
+	public void loadIndex(List<String> files) throws FileNotFoundException {
 		
-		invertInd.clear();
+		if (!invertInd.isEmpty())
+			invertInd.clear();
 		
 		if (!files.isEmpty()) {
 			for (String s : files) {					
 				processFile(s);
 
 			}
+		}
+	}
+	
+	/**
+	 *  Method to print Inverted Index to console
+	 */
+	public void printIndex() {
+		Iterator iter = invertInd.keySet().iterator();
+		while (iter.hasNext()) {
+			String key = iter.next().toString();
+			String value = invertInd.get(key).toString();
+			System.out.println(key + " " + value);
 		}
 	}
 }
