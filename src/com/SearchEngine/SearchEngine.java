@@ -27,7 +27,7 @@ import java.io.FileNotFoundException;
 public class SearchEngine {
 
 	private JFrame frmSearchEngine;
-	private JTextField textField;
+	public static JTextField textField;
 	public static JTable table;
 	
 	/**
@@ -127,7 +127,7 @@ public class SearchEngine {
 		
 		
 		// Column names for our JTable
-		String[] headerNames = { "Filename" };
+		String[] headerNames = { "Filename", "Position" };
 				
 		// Create our new table and table headers
 		@SuppressWarnings("serial")
@@ -155,7 +155,8 @@ public class SearchEngine {
 		// Search button action performed method
 		btnSearch.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				InvertedIndex.getInstance().printIndex();
+				InvertedIndex.getInstance().searchIndex();
+				// InvertedIndex.getInstance().printIndex();
 			}
 		});
 		

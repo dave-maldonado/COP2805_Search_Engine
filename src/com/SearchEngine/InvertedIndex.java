@@ -8,6 +8,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
 
+import javax.swing.table.DefaultTableModel;
+
 /**
  * Builds an Inverted Index in memory 
  * @author dave maldonado 2013
@@ -94,5 +96,33 @@ public final class InvertedIndex {
 			String value = invertInd.get(key).toString();
 			System.out.println(key + " " + value);
 		}
+	}
+	
+	/**
+	 * 
+	 * @author Andrew Medeiros
+	 * 
+	 * Methods to search index and added and remove from jtable
+	 * 
+	 */
+	
+	public void searchIndex() {
+		
+		if (FileIndex.fileIndexed.isEmpty() == false && SearchEngine.textField.getText().isEmpty() == false) {
+			String key = SearchEngine.textField.getText();
+			AddToTable(invertInd.get(key).toString());
+		} else {
+			AddRemoveFileGUI.AlertWindow("No files currently indexed or missing search term");
+		}
+	}
+	
+	
+	/**
+	 * Add the file information to our GUI JTable
+	 * @param data
+	 */
+	private void AddToTable(String data) {
+		// Add the file info to the JTable
+		( (DefaultTableModel) SearchEngine.table.getModel() ).addRow(data.split(DELIMITER));
 	}
 }
