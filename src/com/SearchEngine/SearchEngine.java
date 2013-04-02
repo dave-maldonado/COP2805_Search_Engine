@@ -155,8 +155,6 @@ public class SearchEngine {
 		// Search button action performed method
 		btnSearch.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// Stubbed out a message for now
-				textField.setText("Show Inverted Index!");
 				InvertedIndex.getInstance().printIndex();
 			}
 		});
