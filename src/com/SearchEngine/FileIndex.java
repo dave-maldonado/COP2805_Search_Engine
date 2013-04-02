@@ -24,6 +24,14 @@ import java.util.List;
 
 import javax.swing.table.DefaultTableModel;
 
+
+/**
+ * 
+ * Builds the file index
+ * @author Andrew Medeiros
+ * 
+ * 
+ */
 public class FileIndex {
 	
 	final static String INDEX_FILE = "tmp/fileindex.txt";
@@ -253,10 +261,10 @@ public class FileIndex {
 		String[] data = fileData.split(DELIMITER);
 		
 		if ( FileExists(data[0]) == false ) {
-			data[1] = statuses[1]; 
+			data[1] = statuses[1];
 			fileData = data[0] + DELIMITER + data[1] + DELIMITER + data[2];
 		} else if ( FileExists(data[0]) && data[1].equals(statuses[1]) ) {
-			data[1] = statuses[0]; 
+			data[1] = statuses[0];
 			fileData = data[0] + DELIMITER + data[1] + DELIMITER + data[2];
 		}
 		

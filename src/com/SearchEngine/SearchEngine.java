@@ -153,6 +153,7 @@ public class SearchEngine {
 		
 		// Set the file index list
 		FileIndex.SetFileIndexed();
+		
 		// Load initial Inverted Index
 		try {
 			InvertedIndex.getInstance().loadIndex(FileIndex.fileIndexed);
