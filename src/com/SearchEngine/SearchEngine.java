@@ -18,12 +18,13 @@ import java.awt.event.ActionListener;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.io.FileNotFoundException;
 
 public class SearchEngine {
 
 	private JFrame frmSearchEngine;
 	private JTextField textField;
-
+	
 	/**
 	 * Launch the application.
 	 */
@@ -37,6 +38,13 @@ public class SearchEngine {
 					e.printStackTrace();
 				}
 			}
+		});
+		
+		// Shut down hook run any methods calls here before shutdown
+		Runtime.getRuntime().addShutdownHook(new Thread() {
+		    public void run() {
+		        FileIndex.WriteFileIndex();
+		    }
 		});
 	}
 
@@ -109,7 +117,8 @@ public class SearchEngine {
 		btnSearch.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// Stubbed out a message for now
-				textField.setText("Search Button Pressed!!");
+				textField.setText("Show Inverted Index!");
+				InvertedIndex.getInstance().printIndex();
 			}
 		});
 		
@@ -141,6 +150,17 @@ public class SearchEngine {
 				aboutDialog();
 			}
 		});
+		
+		// Set the file index list
+		FileIndex.SetFileIndexed();
+		
+		// Load initial Inverted Index
+		try {
+			InvertedIndex.getInstance().loadIndex(FileIndex.fileIndexed);
+		} catch (FileNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 	}
 	
 	private static void aboutDialog() {

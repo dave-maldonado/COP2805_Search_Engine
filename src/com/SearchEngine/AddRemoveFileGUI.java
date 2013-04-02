@@ -24,6 +24,7 @@ import java.io.File;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import javax.swing.JSplitPane;
 import javax.swing.JScrollPane;
 import javax.swing.table.DefaultTableModel;
@@ -36,12 +37,13 @@ public class AddRemoveFileGUI {
 	private JButton btnAddFile;
 	private JButton btnRemoveFile;
 	private JScrollPane scrollPane;
-	private JTable table;
+	public static JTable table;
 
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
+		
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -74,16 +76,12 @@ public class AddRemoveFileGUI {
 		
 		
 		// Column names for our JTable
-		String[] headerNames = { "Filename", "Status" };
-		// Stubbed data for our table
-		String[][] data = {
-							{"test.txt", "indexed"}
-						  };
+		String[] headerNames = { "Filename", "Status", "Last Modified" };
 		
 		// Create our new table and table headers
 		@SuppressWarnings("serial")
-		DefaultTableModel model = new DefaultTableModel(data,headerNames){
-			// Override to make the cells not editable
+		DefaultTableModel model = new DefaultTableModel(null, headerNames){
+		// Override to make the cells not editable
 			@Override
 		    public boolean isCellEditable(int row, int column) {
 		        return false;
@@ -108,7 +106,7 @@ public class AddRemoveFileGUI {
 		bottomSplitPane.setResizeWeight(0.5);
 		frmAddOrRemove.getContentPane().add(bottomSplitPane, BorderLayout.SOUTH);
 		
-		// New Jbutton for adding files
+		// New JButton for adding files
 		btnAddFile = new JButton("Add File");
 		bottomSplitPane.setLeftComponent(btnAddFile);
 		btnAddFile.addActionListener(new ActionListener() {
@@ -118,13 +116,29 @@ public class AddRemoveFileGUI {
 				fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
 				fc.showOpenDialog(null);
 				File selectedFile = fc.getSelectedFile();
+
+				FileIndex.AddToIndex(selectedFile);
 			}
 		});
 		
 		// New button to remove files from the index
 		btnRemoveFile = new JButton("Remove File");
 		bottomSplitPane.setRightComponent(btnRemoveFile);
+		btnRemoveFile.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				// Remove the selected row
+				FileIndex.RemoveFromTable();
+			}
+		});
 		
+		// Populate our file table
+		FileIndex.PopulateTable();
+		
+	}
+	
+	// Alert window method to display custom alert window
+	public static void AlertWindow(String message) {
+		JOptionPane.showMessageDialog(null, message, null, JOptionPane.ERROR_MESSAGE);
 	}
 
 }
