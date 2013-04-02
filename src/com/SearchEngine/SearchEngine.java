@@ -13,8 +13,12 @@ package com.SearchEngine;
 
 import java.awt.EventQueue;
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -24,6 +28,7 @@ public class SearchEngine {
 
 	private JFrame frmSearchEngine;
 	private JTextField textField;
+	public static JTable table;
 	
 	/**
 	 * Launch the application.
@@ -62,12 +67,12 @@ public class SearchEngine {
 		frmSearchEngine = new JFrame();
 		
 		frmSearchEngine.setTitle("Search Engine");
-		frmSearchEngine.setBounds(100, 100, 450, 300);
+		frmSearchEngine.setBounds(100, 100, 550, 500);
 		frmSearchEngine.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		GridBagLayout gridBagLayout = new GridBagLayout();
-		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0};
-		gridBagLayout.columnWeights = new double[]{0.0};
+		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 1.0};
+		gridBagLayout.columnWeights = new double[]{1.0};
 		frmSearchEngine.getContentPane().setLayout(gridBagLayout);
 		
 		// Create a new panel and add a new JLabel
@@ -107,12 +112,46 @@ public class SearchEngine {
 		// Add a new button to the GBC layout
 		JButton btnSearch = new JButton("Search");
 		GridBagConstraints gbc_btnSearch = new GridBagConstraints();
+		gbc_btnSearch.insets = new Insets(0, 0, 5, 0);
 		gbc_btnSearch.gridx = 0;
 		gbc_btnSearch.gridy = 3;
 		frmSearchEngine.getContentPane().add(btnSearch, gbc_btnSearch);
-		frmSearchEngine.setSize(400, 400);
-		frmSearchEngine.setLocationRelativeTo(null);
 		
+		// New Search results label
+		JLabel lblSearchResults = new JLabel("Search Results");
+		GridBagConstraints gbc_lblSearchResults = new GridBagConstraints();
+		gbc_lblSearchResults.insets = new Insets(0, 0, 5, 0);
+		gbc_lblSearchResults.gridx = 0;
+		gbc_lblSearchResults.gridy = 4;
+		frmSearchEngine.getContentPane().add(lblSearchResults, gbc_lblSearchResults);
+		
+		
+		// Column names for our JTable
+		String[] headerNames = { "Filename" };
+				
+		// Create our new table and table headers
+		@SuppressWarnings("serial")
+		DefaultTableModel model = new DefaultTableModel(null, headerNames){
+			// Override to make the cells not editable
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				return false;
+			}
+		};
+				
+		// New JTable
+		table = new JTable(model);
+		JTableHeader header = table.getTableHeader();
+		header.setBackground(Color.yellow);
+		
+		// New JScrollPane to hold our JTable
+		JScrollPane scrollPane = new JScrollPane(table);
+		GridBagConstraints gbc_scrollPane = new GridBagConstraints();
+		gbc_scrollPane.fill = GridBagConstraints.BOTH;
+		gbc_scrollPane.gridx = 0;
+		gbc_scrollPane.gridy = 5;
+		frmSearchEngine.getContentPane().add(scrollPane, gbc_scrollPane);
+
 		// Search button action performed method
 		btnSearch.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
