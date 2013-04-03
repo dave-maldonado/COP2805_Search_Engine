@@ -155,46 +155,68 @@ public class SearchEngine {
 				// clear JTable before new search
 				model.setRowCount(0);
 				
-				String key; // word or phrase being searched
-				String[] keys; // multiple words split by space used for ANY/EXACT searches
-				boolean hasKeys = true; //used for ANY search
+				// clean input of unnecessary whitespace
+				String input = textField.getText().replaceAll("\\s+", " ").trim();
 				
-				// perform search based on which search type is selected in comboBox
-				int sel = comboBox.getSelectedIndex();
-				if (sel == 0) { // ALL
-					keys = textField.getText().split(" ");
-					for (String k : keys) {
-						if (!InvertedIndex.getInstance().containsKey(k))
-							hasKeys = false;
-					}
-					if (hasKeys == true) {
+				// multiple words split by single whitespace
+				String[] keys = input.split(" ");
+				
+				// used for ALL searches (not quite working- will prob remove)
+				boolean hasKeys = true; 
+				
+				// check if file index is empty or no search terms entered
+				if (FileIndex.fileIndexed.isEmpty()) {
+					AddRemoveFileGUI.AlertWindow("No files in index.");
+				} else if (input.length() == 0 ) {
+					AddRemoveFileGUI.AlertWindow("No search terms entered.");
+				} else {
+					
+					/*
+					 * selection logic for search, may end up moving this stuff,
+					 * big and unwieldy :(
+					 */
+					
+					// type of search selected in comboBox (ALL, ANY, EXACT)
+					int sel = comboBox.getSelectedIndex();
+					
+					// ALL search (not working right, checks to see if words
+					// are contained in group of documents instead of each doc)
+					if (sel == 0) { 
 						for (String k : keys) {
-							InvertedIndex.getInstance().AddToTable(k);
-							InvertedIndex.getInstance().searchIndex(k);
+							if (!InvertedIndex.getInstance().containsKey(k))
+								hasKeys = false;
 						}
-					}
-					else {
-						InvertedIndex.getInstance().AddToTable("No document with all terms.");
-					}
-				} else if (sel == 1) { // ANY
-					keys = textField.getText().split(" ");
-					for (String k : keys) {
-						InvertedIndex.getInstance().AddToTable(k);
-						InvertedIndex.getInstance().searchIndex(k);
-					}
-				// "EXACT PHRASE" IS NOT IMPLEMENTED CORRECTLY YET
-				} else { // EXACT
-					key = textField.getText();
-					keys = textField.getText().split(" ");
-					for (String k : keys) {
-						if (!InvertedIndex.getInstance().containsKey(k))
-							hasKeys = false;
-					}
-					if (hasKeys == true) {
-						InvertedIndex.getInstance().AddToTable(key);
-						InvertedIndex.getInstance().searchIndex(key);
-					} else {
-						InvertedIndex.getInstance().AddToTable("\""+key+"\""+" not found.");
+						if (hasKeys == true) {
+							for (String k : keys) {
+								InvertedIndex.getInstance().AddToTable(k);
+								InvertedIndex.getInstance().searchIndex(k);
+							}
+						} else {
+							InvertedIndex.getInstance().AddToTable(
+									"No document with all terms.");
+						}
+					} 
+					
+					// ANY search
+					else if (sel == 1) {
+						for (String k : keys) {
+								InvertedIndex.getInstance().AddToTable(k);
+								InvertedIndex.getInstance().searchIndex(k);
+						}
+					} 
+					
+					// EXACT Phrase search (need to figure this out too)
+					else { 
+						for (String k : keys) {
+							if (!InvertedIndex.getInstance().containsKey(k))
+								hasKeys = false;
+						}
+						if (hasKeys == true) {
+							
+						} else {
+							InvertedIndex.getInstance().AddToTable(
+									"\"" + input + "\"" + " not found.");
+						}
 					}
 				}				
 			}

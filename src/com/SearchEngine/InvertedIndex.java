@@ -104,7 +104,7 @@ public final class InvertedIndex {
 			System.out.println(key + " " + value);
 		}
 	}
-		
+			
 	/**
 	 * Method to search index and call AddToTable with result
 	 * @param key
@@ -112,7 +112,6 @@ public final class InvertedIndex {
 	public void searchIndex(String key) {
 
 		if (invertInd.containsKey(key)) {
-			if (FileIndex.fileIndexed.isEmpty() == false && SearchEngine.textField.getText().isEmpty() == false) {
 				
 				// ArrayList of Filename,Position pairs mapped to search term
 				List<Pair> values = invertInd.get(key);
@@ -122,15 +121,9 @@ public final class InvertedIndex {
 					String val = p.toString();
 					AddToTable(val.substring(1, val.length()-1));
 				}
-			} else {
-				AddRemoveFileGUI.AlertWindow("No files currently indexed or missing search term");
-			}
-			
 		} else {
-			AddToTable("\""+key+"\""+" not found."); 
-			
+			AddToTable("\""+key+"\""+" not found."); 			
 		}
-
 	}
 	
 	/**
