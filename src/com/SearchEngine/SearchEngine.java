@@ -188,6 +188,7 @@ public class SearchEngine {
 						InvertedIndex.getInstance().AddToTable(k);
 						InvertedIndex.getInstance().searchIndex(k);
 					}
+				// "EXACT PHRASE" IS NOT IMPLEMENTED CORRECTLY YET
 				} else { // EXACT
 					key = textField.getText();
 					keys = textField.getText().split(" ");
