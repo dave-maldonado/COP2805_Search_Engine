@@ -23,6 +23,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.io.FileNotFoundException;
+import java.util.Vector;
 
 public class SearchEngine {
 
@@ -101,7 +102,7 @@ public class SearchEngine {
 		String[] comboOpts = { "ALL search terms", "ANY search terms", "EXACT phrase" };	
 		
 		// Create and add the combo box
-		JComboBox comboBox = new JComboBox(comboOpts);
+		final JComboBox comboBox = new JComboBox(comboOpts);
 		GridBagConstraints gbc_comboBox = new GridBagConstraints();
 		gbc_comboBox.insets = new Insets(0, 0, 5, 0);
 		gbc_comboBox.fill = GridBagConstraints.HORIZONTAL;
@@ -131,6 +132,7 @@ public class SearchEngine {
 				
 		// Create our new table and table headers
 		@SuppressWarnings("serial")
+		final
 		DefaultTableModel model = new DefaultTableModel(null, headerNames){
 			// Override to make the cells not editable
 			@Override
@@ -155,8 +157,51 @@ public class SearchEngine {
 		// Search button action performed method
 		btnSearch.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				InvertedIndex.getInstance().searchIndex();
-				// InvertedIndex.getInstance().printIndex();
+				
+				// clear jtable before new search
+				model.setRowCount(0);
+				
+				String key;
+				String[] keys;
+				boolean hasKeys = true;
+				
+				// 
+				int sel = comboBox.getSelectedIndex();
+				if (sel == 0) { // ALL
+					keys = textField.getText().split(" ");
+					for (String k : keys) {
+						if (!InvertedIndex.getInstance().containsKey(k))
+							hasKeys = false;
+					}
+					if (hasKeys == true) {
+						for (String k : keys) {
+							InvertedIndex.getInstance().AddToTable(k);
+							InvertedIndex.getInstance().searchIndex(k);
+						}
+					}
+					else {
+						InvertedIndex.getInstance().AddToTable("No document with all terms.");
+					}
+				} else if (sel == 1) { // ANY
+					keys = textField.getText().split(" ");
+					for (String k : keys) {
+						InvertedIndex.getInstance().AddToTable(k);
+						InvertedIndex.getInstance().searchIndex(k);
+					}
+				} else { // EXACT
+					key = textField.getText();
+					keys = textField.getText().split(" ");
+					for (String k : keys) {
+						if (!InvertedIndex.getInstance().containsKey(k))
+							hasKeys = false;
+					}
+					if (hasKeys == true) {
+						InvertedIndex.getInstance().AddToTable(key);
+						InvertedIndex.getInstance().searchIndex(key);
+					} else {
+						InvertedIndex.getInstance().AddToTable("\""+key+"\""+" not found.");
+					}
+				}				
 			}
 		});
 		

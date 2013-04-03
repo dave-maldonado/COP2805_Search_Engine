@@ -87,6 +87,14 @@ public final class InvertedIndex {
 	}
 	
 	/**
+	 * Method to test if key is contained in index
+	 * @param key
+	 */
+	public boolean containsKey(String key) {
+		return invertInd.containsKey(key);
+	}
+	
+	/**
 	 *  Method to print Inverted Index to console
 	 */
 	public void printIndex() {
@@ -97,31 +105,42 @@ public final class InvertedIndex {
 			System.out.println(key + " " + value);
 		}
 	}
-	
+		
 	/**
-	 * 
-	 * @author Andrew Medeiros
-	 * 
 	 * Methods to search index and added and remove from jtable
-	 * 
+	 * @param key
+	 * @author Andrew Medeiros, David Maldonado 2013
 	 */
 	
-	public void searchIndex() {
-		
-		if (FileIndex.fileIndexed.isEmpty() == false && SearchEngine.textField.getText().isEmpty() == false) {
-			String key = SearchEngine.textField.getText();
-			AddToTable(invertInd.get(key).toString());
+	public void searchIndex(String key) {
+
+		if (invertInd.containsKey(key)) {
+			if (FileIndex.fileIndexed.isEmpty() == false && SearchEngine.textField.getText().isEmpty() == false) {
+				
+				// ArrayList of Filename,Position pairs mapped to search term
+				List<Pair> values = invertInd.get(key);
+				
+				// add each pair in list to search results table
+				for (Pair p : values) {
+					String val = p.toString();
+					AddToTable(val.substring(1, val.length()-1));
+				}
+			} else {
+				AddRemoveFileGUI.AlertWindow("No files currently indexed or missing search term");
+			}
+			
 		} else {
-			AddRemoveFileGUI.AlertWindow("No files currently indexed or missing search term");
+			AddToTable("\""+key+"\""+" not found.");
+			
 		}
+
 	}
-	
-	
+		
 	/**
 	 * Add the file information to our GUI JTable
 	 * @param data
 	 */
-	private void AddToTable(String data) {
+	public void AddToTable(String data) {
 		// Add the file info to the JTable
 		( (DefaultTableModel) SearchEngine.table.getModel() ).addRow(data.split(DELIMITER));
 	}
