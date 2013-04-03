@@ -13,24 +13,19 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * 
  * Creates a file Index with the status of the file and last modified.
  * This is stored in a persistent file and loaded into a list on start up in the following format
  * { file path, status, last modified }
  * 
  * @author Andrew Medeiros 2013
- * 
  */
 
 import javax.swing.table.DefaultTableModel;
 
 
 /**
- * 
  * Builds the file index
  * @author Andrew Medeiros
- * 
- * 
  */
 public class FileIndex {
 	

@@ -1,5 +1,9 @@
 package com.SearchEngine;
 
+/**
+ * "Pair" object
+ * @author Dave Maldonado 2013
+ */
 public class Pair<L,R> {
 
 	private final L left;

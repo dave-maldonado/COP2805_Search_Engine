@@ -1,12 +1,6 @@
-/*
+/**
  * Search Engine GUI
- * 
- * Authors:
- * Andrew Medeiros
- * Dave Maldonado
- * Kris Zawalski
- * Shawn Smith
- * 
+ * @author Andrew Medeiros, Dave Maldonado 2013
  */
 
 package com.SearchEngine;
@@ -158,14 +152,14 @@ public class SearchEngine {
 		btnSearch.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				// clear jtable before new search
+				// clear JTable before new search
 				model.setRowCount(0);
 				
-				String key;
-				String[] keys;
-				boolean hasKeys = true;
+				String key; // word or phrase being searched
+				String[] keys; // multiple words split by space used for ANY/EXACT searches
+				boolean hasKeys = true; //used for ANY search
 				
-				// 
+				// perform search based on which search type is selected in comboBox
 				int sel = comboBox.getSelectedIndex();
 				if (sel == 0) { // ALL
 					keys = textField.getText().split(" ");

@@ -7,12 +7,11 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
-
 import javax.swing.table.DefaultTableModel;
 
 /**
  * Builds an Inverted Index in memory 
- * @author dave maldonado 2013
+ * @author Dave Maldonado, Andrew Medeiros 2013
  */
 public final class InvertedIndex {
 				
@@ -107,11 +106,9 @@ public final class InvertedIndex {
 	}
 		
 	/**
-	 * Methods to search index and added and remove from jtable
+	 * Method to search index and call AddToTable with result
 	 * @param key
-	 * @author Andrew Medeiros, David Maldonado 2013
 	 */
-	
 	public void searchIndex(String key) {
 
 		if (invertInd.containsKey(key)) {
@@ -120,7 +117,7 @@ public final class InvertedIndex {
 				// ArrayList of Filename,Position pairs mapped to search term
 				List<Pair> values = invertInd.get(key);
 				
-				// add each pair in list to search results table
+				// call AddToTable with each value found with key
 				for (Pair p : values) {
 					String val = p.toString();
 					AddToTable(val.substring(1, val.length()-1));
@@ -130,14 +127,14 @@ public final class InvertedIndex {
 			}
 			
 		} else {
-			AddToTable("\""+key+"\""+" not found.");
+			AddToTable("\""+key+"\""+" not found."); 
 			
 		}
 
 	}
-		
+	
 	/**
-	 * Add the file information to our GUI JTable
+	 * Method to add information to our GUI JTable
 	 * @param data
 	 */
 	public void AddToTable(String data) {
