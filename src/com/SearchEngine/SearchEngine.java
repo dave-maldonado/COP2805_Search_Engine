@@ -182,19 +182,7 @@ public class SearchEngine {
 					// ALL search (not working right, checks to see if words
 					// are contained in group of documents instead of each doc)
 					if (sel == 0) { 
-						for (String k : keys) {
-							if (!InvertedIndex.getInstance().containsKey(k))
-								hasKeys = false;
-						}
-						if (hasKeys == true) {
-							for (String k : keys) {
-								InvertedIndex.getInstance().AddToTable(k);
-								InvertedIndex.getInstance().searchIndex(k);
-							}
-						} else {
-							InvertedIndex.getInstance().AddToTable(
-									"No document with all terms.");
-						}
+						InvertedIndex.getInstance().AddToTable("not working, try ANY search");		
 					} 
 					
 					// ANY search
@@ -207,16 +195,7 @@ public class SearchEngine {
 					
 					// EXACT Phrase search (need to figure this out too)
 					else { 
-						for (String k : keys) {
-							if (!InvertedIndex.getInstance().containsKey(k))
-								hasKeys = false;
-						}
-						if (hasKeys == true) {
-							
-						} else {
-							InvertedIndex.getInstance().AddToTable(
-									"\"" + input + "\"" + " not found.");
-						}
+						InvertedIndex.getInstance().AddToTable("not working, try ANY search");		
 					}
 				}				
 			}
