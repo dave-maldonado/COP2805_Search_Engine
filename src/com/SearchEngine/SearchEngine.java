@@ -17,6 +17,8 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Vector;
 
 public class SearchEngine {
@@ -24,6 +26,7 @@ public class SearchEngine {
 	private JFrame frmSearchEngine;
 	public static JTextField textField;
 	public static JTable table;
+	final static String DELIMITER = ",";
 	
 	/**
 	 * Launch the application.
@@ -161,20 +164,12 @@ public class SearchEngine {
 				// multiple words split by single whitespace
 				String[] keys = input.split(" ");
 				
-				// used for ALL searches (not quite working- will prob remove)
-				boolean hasKeys = true; 
-				
 				// check if file index is empty or no search terms entered
 				if (FileIndex.fileIndexed.isEmpty()) {
 					AddRemoveFileGUI.AlertWindow("No files in index.");
 				} else if (input.length() == 0 ) {
 					AddRemoveFileGUI.AlertWindow("No search terms entered.");
 				} else {
-					
-					/*
-					 * selection logic for search, may end up moving this stuff,
-					 * big and unwieldy :(
-					 */
 					
 					// type of search selected in comboBox (ALL, ANY, EXACT)
 					int sel = comboBox.getSelectedIndex();
@@ -193,9 +188,15 @@ public class SearchEngine {
 						}
 					} 
 					
-					// EXACT Phrase search (need to figure this out too)
+					// EXACT Phrase search 
 					else { 
-						InvertedIndex.getInstance().AddToTable("not working, try ANY search");		
+						if (keys.length > 1) {
+							InvertedIndex.getInstance().searchPhrase(input);
+						}													
+						else {
+							InvertedIndex.getInstance().AddToTable(keys[0]);
+							InvertedIndex.getInstance().searchIndex(keys[0]);
+						}
 					}
 				}				
 			}
