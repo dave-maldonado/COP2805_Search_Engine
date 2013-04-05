@@ -191,7 +191,7 @@ public class SearchEngine {
 					// EXACT Phrase search 
 					else { 
 						if (keys.length > 1) {
-							InvertedIndex.getInstance().searchPhrase(input);
+							InvertedIndex.getInstance().searchPhrase(keys);
 						}													
 						else {
 							InvertedIndex.getInstance().AddToTable(keys[0]);

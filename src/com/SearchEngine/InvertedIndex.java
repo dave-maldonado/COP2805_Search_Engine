@@ -105,7 +105,7 @@ public final class InvertedIndex {
 	}
 			
 	/**
-	 * Method to search index and call AddToTable with result
+	 * Method to search index for word and call AddToTable with result
 	 * @param key
 	 */
 	public void searchIndex(String key) {
@@ -126,93 +126,64 @@ public final class InvertedIndex {
 	}
 	
 	/**
-	 * Method to search for exact phrase.
+	 * Method to search index for exact phrase and call AddToTable with result
 	 * @param keys
 	 */
-	public void searchPhrase(String input) {
+	public void searchPhrase(String[] keys) {
 		
-		String[] keys = input.split(" ");
-		List<Pair> vals = new ArrayList<Pair>();
-		List<Pair> vals2 = new ArrayList<Pair>();
-		boolean containsNext = false;
-		System.out.println("containsNext is false"); //diagnostic
-		
-		vals.addAll(invertInd.get(keys[0]));
-	
-		// diagnostic console prints
-		System.out.println("keys " + keys.toString());
-		System.out.println("vals before loops " + vals.toString());
-		System.out.println(keys[1]); 
-		
-		// iterate thru keys
-		for (int i = 1; i < keys.length; i++) {
-			System.out.println("keys loop start"); //diagnostic
-			vals2.addAll(invertInd.get(keys[i]));
-			System.out.println("vals2 " + vals2.toString()); //diagnostic
-			System.out.println("vals before val loop" + vals.toString()); //diagnostic
-			
-			// iterate thru Pairs in vals
-			for (Pair p1 : vals) {
-				System.out.println("val loop start"); //diagnostic
-				String doc1 = p1.getLeft().toString();
-				String pos1 = p1.getRight().toString();
-				System.out.println("looking at val element" + doc1 + " " + pos1); // diagnostic
-				
-				// iterate thru Pairs in vals2
-				for (Pair p2 : vals2) {
-					System.out.println("vals2 loop start"); //diagnostic
-					String doc2 = p2.getLeft().toString();
-					String pos2 = p2.getRight().toString();
-					System.out.println("comparing val2 element" + doc2 + " " + pos2); //diagnostic
-					
-					// compare Pair in vals2 to Pair in val1 and replace if match, also switch containsNext flag to true if match
-					if (doc1 == doc2 && (pos1 + 1) == pos2) {
-						vals.remove(p1);
-						vals.add(p2);
-						System.out.println("replacing element in vals"); //diagnostic
-						System.out.println("vals " + vals.toString()); //diagnostic
-						containsNext = true;
-						System.out.println("containsNext is true"); //diagnostic
-					}				
-					System.out.println("val2 loop end"); //diagnostic
-				} 
-				
-				// continuation of vals loop
-				// if containsNext is false removes element from vals
-				if (containsNext == false) {
-					System.out.println("containsNext tested false"); //diagnostic
-					vals.remove(p1);
-					System.out.println("removing word from vals"); //diagnostic
-					System.out.println("vals " + vals.toString()); //diagnostic
-				}
-				// set containsNext to false
-				containsNext = false;
-				System.out.println("containsNext is now false"); //diagnostic
-				System.out.println("vals at val loop end" + vals.toString()); //diagnostic
-				System.out.println("val1 loop end"); //diagnostic
-			} 
-			
-			// continuation of keys loop
-			System.out.println("outside of val1 loop"); //diagnostic
-			vals2.clear();
-			System.out.println("vals2 cleared"); //diagnostic
-			System.out.println("vals2 " + vals2.toString());
-			System.out.println("keys loop end"); //diagnostic
+		// check if all search terms are in index
+		boolean hasTerms = true;
+		for (String s : keys) {
+			if (!invertInd.containsKey(s)) {
+				hasTerms = false;
+			}
 		}
-		
-		// test how many elements in list and print results
-		if (vals.size() == 0) { 
-			System.out.println("vals " + vals.toString()); //diagnostic
-			System.out.println("adding result to Jtable - not found"); //diagnostic
+				
+		if (hasTerms) {
+			
+			// list of values for first search term
+			List<Pair> valsA = new ArrayList<Pair>();
+			valsA.addAll(invertInd.get(keys[0]));
+			
+			// lists used for comparisons
+			List<Pair> valsB = new ArrayList<Pair>();
+			List<Pair> valsC = new ArrayList<Pair>();
+			
+			// iterate thru each search term
+			for (int i = 1; i < keys.length; i++) {
+				valsB.clear();
+				valsB.addAll(invertInd.get(keys[i]));
+				// iterate thru each Pair value mapped to first search term
+				for (Pair p : valsA) {
+					String docA = p.getLeft().toString();
+					int posA = Integer.parseInt(p.getRight().toString());
+					// iterate thru each Pair value mapped to second term
+					for (Pair q : valsB) {
+						String docB = q.getLeft().toString();
+						int posB = Integer.parseInt(q.getRight().toString());
+						// compare first Pair to second Term
+						if (docB.equals(docA) && posB == (posA + 1)) {
+							Pair temp = new Pair(q.getLeft(), q.getRight());
+							valsC.add(temp);
+						}
+					}
+				}
+				valsA.clear();
+				valsA.addAll(valsC);
+				valsC.clear();
+			}
+			if (valsA.size() > 0) { 
+				for (Pair p : valsA) {
+					AddToTable(p.getLeft().toString());
+				}
+			} else {
+				AddToTable("phrase not found.");
+			}
+		} else {
 			AddToTable("phrase not found.");
 		}
-		else {
-			System.out.println("vals " + vals.toString()); //diagnostic
-			System.out.println("adding result to Jtable - match found"); //diagnostic
-			AddToTable(vals);
-		}		
 	}
-	
+		
 	/**
 	 * Method to return list of Pair values for given key
 	 * @param key
