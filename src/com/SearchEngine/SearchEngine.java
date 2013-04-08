@@ -174,10 +174,9 @@ public class SearchEngine {
 					// type of search selected in comboBox (ALL, ANY, EXACT)
 					int sel = comboBox.getSelectedIndex();
 					
-					// ALL search (not working right, checks to see if words
-					// are contained in group of documents instead of each doc)
+					// ALL search 
 					if (sel == 0) { 
-						InvertedIndex.getInstance().AddToTable("not working, try ANY search");		
+						InvertedIndex.getInstance().termsInDoc(keys);
 					} 
 					
 					// ANY search
@@ -191,7 +190,7 @@ public class SearchEngine {
 					// EXACT Phrase search 
 					else { 
 						if (keys.length > 1) {
-							InvertedIndex.getInstance().searchPhrase(keys);
+							InvertedIndex.getInstance().exactSearch(keys);
 						}													
 						else {
 							InvertedIndex.getInstance().AddToTable(keys[0]);

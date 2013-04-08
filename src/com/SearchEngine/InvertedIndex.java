@@ -129,7 +129,7 @@ public final class InvertedIndex {
 	 * Method to search index for exact phrase and call AddToTable with result
 	 * @param keys
 	 */
-	public void searchPhrase(String[] keys) {
+	public void exactSearch(String[] keys) {
 		
 		// check if all search terms are in index
 		boolean hasTerms = true;
@@ -184,6 +184,56 @@ public final class InvertedIndex {
 		}
 	}
 		
+	/**
+	 * Method to search if all search terms are contained in document
+	 * @param keys
+	 */
+	public void termsInDoc(String[] keys) {
+		
+		boolean doesContain = false;
+		boolean atLeastOne = false;
+		boolean noneIndexed = false;
+		int amountContained = 0;
+		
+		for (String k : keys) {
+			if (!invertInd.containsKey(k)) {
+				noneIndexed = true;
+			}
+		}
+		
+		
+		if (!noneIndexed) {
+			for (String s : FileIndex.fileIndexed) {
+				String[] tokens = s.split(DELIMITER);
+				String doc = tokens[0];
+				for (String k : keys) {
+					List<Pair> vals = invertInd.get(k);
+					for (Pair p : vals) {
+						if (p.getLeft().toString() == doc) {
+							doesContain = true;
+						}
+					}
+					if (doesContain = true)
+						;
+					{
+						amountContained++;
+					}
+					doesContain = false;
+				}
+				if (amountContained == keys.length) {
+					AddToTable(doc);
+					atLeastOne = true;
+				}
+			}
+			if (atLeastOne = false) {
+				AddToTable("no files contain all search terms.");
+			}
+		} else {
+			AddToTable("no files contain all the search terms.");
+		}
+	}
+	
+	
 	/**
 	 * Method to return list of Pair values for given key
 	 * @param key
